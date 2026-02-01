@@ -39,12 +39,12 @@ export const Auth: React.FC<AuthProps> = ({ setUser, navigateTo }) => {
       {/* LEFT SECTION: Visual Brand (Dark) */}
       <div className="w-full lg:w-[45%] bg-black p-12 lg:p-24 flex flex-col justify-between relative overflow-hidden">
         {/* Decorative Gradient Overlay */}
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#D4AF37]/5 blur-[120px] rounded-full -mr-64 -mt-64"></div>
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#D4AF37]/5 blur-[120px] rounded-full -ml-64 -mb-64"></div>
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#F1E5AC]/5 blur-[120px] rounded-full -mr-64 -mt-64"></div>
+        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#F1E5AC]/5 blur-[120px] rounded-full -ml-64 -mb-64"></div>
 
         <div className="relative z-10">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-[#D4AF37] rounded flex items-center justify-center font-black text-black italic text-sm">B</div>
+            <div className="w-8 h-8 bg-[#F1E5AC] rounded flex items-center justify-center font-black text-black italic text-sm">B</div>
             <span className="text-sm font-black tracking-widest text-white uppercase italic">BLACK BOX.</span>
           </div>
         </div>
@@ -52,7 +52,7 @@ export const Auth: React.FC<AuthProps> = ({ setUser, navigateTo }) => {
         <div className="relative z-10 space-y-8 py-20 lg:py-0">
           <h1 className="text-6xl lg:text-[7rem] font-black italic tracking-tighter leading-[0.85] text-white uppercase">
             Login <br />
-            <span className="text-[#D4AF37]">Page</span>
+            <span className="text-[#F1E5AC]">Page</span>
           </h1>
           <p className="text-lg lg:text-xl text-white/40 font-light italic leading-relaxed max-w-sm">
             Start your journey now with us and access the elite hardware repository.
@@ -68,9 +68,7 @@ export const Auth: React.FC<AuthProps> = ({ setUser, navigateTo }) => {
 
       {/* RIGHT SECTION: Interaction (Light) */}
       <div className="w-full lg:w-[55%] bg-[#F9F9F9] flex items-center justify-center p-8 lg:p-24">
-        
         <div className="w-full max-w-[480px] bg-white rounded-[2.5rem] p-8 md:p-14 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] border border-black/5 animate-in fade-in slide-in-from-right-10 duration-700">
-          
           <div className="mb-10 text-center lg:text-left">
             <h2 className="text-3xl font-black italic tracking-tighter uppercase text-black">
               {mode === 'login' ? 'Login to your account' : 'Create an account'}
@@ -81,24 +79,6 @@ export const Auth: React.FC<AuthProps> = ({ setUser, navigateTo }) => {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            {mode === 'signup' && (
-              <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-black/40 ml-1">Full Name</label>
-                <div className="relative">
-                  <UserIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-black/10" size={18} />
-                  <input 
-                    type="text"
-                    name="name"
-                    required
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    className="w-full bg-[#F5F5F5] border border-transparent rounded-2xl pl-12 pr-6 py-4 text-sm font-bold text-black outline-none focus:border-[#D4AF37]/50 focus:bg-white transition-all placeholder:text-black/10"
-                    placeholder="John Doe"
-                  />
-                </div>
-              </div>
-            )}
-
             <div className="space-y-2">
               <label className="text-[10px] font-black uppercase tracking-widest text-black/40 ml-1">Email</label>
               <div className="relative">
@@ -109,7 +89,7 @@ export const Auth: React.FC<AuthProps> = ({ setUser, navigateTo }) => {
                   required
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="w-full bg-[#F5F5F5] border border-transparent rounded-2xl pl-12 pr-6 py-4 text-sm font-bold text-black outline-none focus:border-[#D4AF37]/50 focus:bg-white transition-all placeholder:text-black/10"
+                  className="w-full bg-[#F5F5F5] border border-transparent rounded-2xl pl-12 pr-6 py-4 text-sm font-bold text-black outline-none focus:border-[#F1E5AC]/50 focus:bg-white transition-all placeholder:text-black/10"
                   placeholder="identity@blackbox.gh"
                 />
               </div>
@@ -118,9 +98,6 @@ export const Auth: React.FC<AuthProps> = ({ setUser, navigateTo }) => {
             <div className="space-y-2">
               <div className="flex justify-between items-center px-1">
                 <label className="text-[10px] font-black uppercase tracking-widest text-black/40">Password</label>
-                {mode === 'login' && (
-                  <button type="button" className="text-[9px] font-black uppercase tracking-widest text-[#D4AF37] hover:underline">Forgot ?</button>
-                )}
               </div>
               <div className="relative">
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-black/10" size={18} />
@@ -130,7 +107,7 @@ export const Auth: React.FC<AuthProps> = ({ setUser, navigateTo }) => {
                   required
                   value={formData.password}
                   onChange={handleInputChange}
-                  className="w-full bg-[#F5F5F5] border border-transparent rounded-2xl pl-12 pr-12 py-4 text-sm font-bold text-black outline-none focus:border-[#D4AF37]/50 focus:bg-white transition-all placeholder:text-black/10"
+                  className="w-full bg-[#F5F5F5] border border-transparent rounded-2xl pl-12 pr-12 py-4 text-sm font-bold text-black outline-none focus:border-[#F1E5AC]/50 focus:bg-white transition-all placeholder:text-black/10"
                   placeholder="••••••••"
                 />
                 <button 
@@ -145,36 +122,25 @@ export const Auth: React.FC<AuthProps> = ({ setUser, navigateTo }) => {
 
             <button 
               type="submit" 
-              className="w-full py-5 bg-[#D4AF37] text-black font-black rounded-2xl text-xs uppercase tracking-[0.2em] shadow-xl hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-3 mt-4"
+              className="w-full py-5 bg-[#F1E5AC] text-black font-black rounded-2xl text-xs uppercase tracking-[0.2em] shadow-xl hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-3 mt-4"
             >
               {mode === 'login' ? 'Login now' : 'Create account'}
             </button>
           </form>
 
           <div className="mt-8 text-center space-y-6">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-black/5"></div></div>
-              <div className="relative flex justify-center"><span className="px-4 bg-white text-[9px] font-black text-black/10 uppercase tracking-[0.3em]">Hardware Verification</span></div>
-            </div>
-
             <button 
               onClick={() => setMode(mode === 'login' ? 'signup' : 'login')}
               className="text-[10px] font-black uppercase tracking-widest text-black/30 hover:text-black transition-all italic"
             >
               {mode === 'login' ? (
-                <>Don't have an account? <span className="text-[#D4AF37] ml-1">Sign up</span></>
+                <>Don't have an account? <span className="text-[#F1E5AC] ml-1">Sign up</span></>
               ) : (
-                <>Already have an account? <span className="text-[#D4AF37] ml-1">Log in</span></>
+                <>Already have an account? <span className="text-[#F1E5AC] ml-1">Log in</span></>
               )}
             </button>
           </div>
-
-          <div className="mt-10 pt-6 border-t border-black/5 flex items-center justify-center gap-3 opacity-10">
-            <Shield size={14} className="text-black" />
-            <span className="text-[8px] font-black uppercase tracking-widest">Encrypted Identity Link // Sec-v4</span>
-          </div>
         </div>
-
       </div>
     </div>
   );

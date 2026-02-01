@@ -1,5 +1,5 @@
 
-export type Category = 'iPhone' | 'Laptop' | 'Accessories' | 'Gaming' | 'Audio';
+export type Category = 'iPhone' | 'Laptop' | 'Accessories' | 'Gaming' | 'Audio' | 'Trades';
 
 export interface ProductVariant {
   name: string; // e.g., "Color", "Storage"

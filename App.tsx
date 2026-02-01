@@ -10,7 +10,7 @@ import {
   useParams,
   createMemoryHistory
 } from '@tanstack/react-router';
-import { X, CheckCircle2, Activity, Scale } from 'lucide-react';
+import { X, CheckCircle2, Activity, Scale, RefreshCcw } from 'lucide-react';
 import { Product, User, CartItem, Category, RepairRequest, Order } from './types';
 import { INITIAL_PRODUCTS } from './constants';
 import { Navbar } from './components/Navbar';
@@ -22,6 +22,7 @@ import { Store } from './views/Store';
 import { Auth } from './views/Auth';
 import { Profile } from './views/Profile';
 import { Cart } from './views/Cart';
+import { Trades } from './views/Trades';
 import { QuickViewModal } from './components/QuickViewModal';
 import { CompareModal } from './components/CompareModal';
 import { generateId } from './lib/utils';
@@ -99,7 +100,7 @@ const productDetailRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/product/$productId',
   component: () => {
-    const { productId } = useParams({ from: productDetailRoute.id });
+    const { productId } = useParams({ from: productDetailRoute.id } as any);
     const context = useAppContext();
     const product = context.products.find((p: Product) => p.id === productId);
     if (!product) return <div className="p-20 text-center text-white/40 uppercase font-black tracking-widest">Unit Not Found.</div>;
@@ -134,6 +135,15 @@ const repairRoute = createRoute({
   },
 });
 
+const tradesRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/trades',
+  component: () => {
+    const context = useAppContext();
+    return <Trades {...context} />;
+  },
+});
+
 const profileRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/profile',
@@ -158,6 +168,7 @@ const routeTree = rootRoute.addChildren([
   productDetailRoute,
   cartRoute,
   repairRoute,
+  tradesRoute,
   profileRoute,
   authRoute,
 ]);
@@ -171,12 +182,6 @@ const router = createRouter({
   history: memoryHistory,
   defaultPreload: 'intent',
 } as any);
-
-declare module '@tanstack/react-router' {
-  interface Register {
-    router: typeof router
-  }
-}
 
 function RootComponent() {
   const [products] = useState<Product[]>(INITIAL_PRODUCTS);
@@ -306,7 +311,7 @@ function RootComponent() {
 
   return (
     <AppContext.Provider value={contextValues}>
-      <div className="flex flex-col min-h-screen bg-black text-white selection:bg-[#D4AF37] selection:text-black">
+      <div className="flex flex-col min-h-screen bg-black text-white selection:bg-[#B38B21] selection:text-black">
         <Navbar 
           user={user} 
           cart={cart} 
@@ -322,7 +327,7 @@ function RootComponent() {
         {compareIds.length > 0 && (
           <button 
             onClick={() => setIsCompareOpen(true)}
-            className="fixed bottom-12 left-1/2 -translate-x-1/2 z-[100] px-10 py-5 bg-[#D4AF37] text-black font-black rounded-full text-[10px] uppercase tracking-[0.4em] flex items-center gap-4 shadow-[0_10px_40px_rgba(212,175,55,0.4)] transition-transform hover:scale-105"
+            className="fixed bottom-12 left-1/2 -translate-x-1/2 z-[100] px-10 py-5 bg-[#B38B21] text-black font-black rounded-full text-[10px] uppercase tracking-[0.4em] flex items-center gap-4 shadow-[0_10px_40px_rgba(179,139,33,0.4)] transition-transform hover:scale-105"
           >
             <Scale size={18} /> Matrix ({compareIds.length})
           </button>
@@ -344,7 +349,7 @@ function RootComponent() {
         />
 
         {notification && (
-          <div className="fixed bottom-12 left-1/2 -translate-x-1/2 z-[130] px-8 py-5 rounded-full shadow-2xl animate-in slide-in-from-bottom-10 flex items-center gap-5 bg-[#D4AF37] text-black border-none">
+          <div className="fixed bottom-12 left-1/2 -translate-x-1/2 z-[130] px-8 py-5 rounded-full shadow-2xl animate-in slide-in-from-bottom-10 flex items-center gap-5 bg-[#B38B21] text-black border-none">
             {notification.type === 'success' ? <CheckCircle2 size={18}/> : <Activity size={18}/>}
             <p className="font-bold text-[10px] uppercase tracking-[0.3em]">{notification.msg}</p>
           </div>
@@ -356,8 +361,8 @@ function RootComponent() {
               <X size={32}/>
             </button>
             <div className="flex flex-col gap-10 text-4xl font-black italic uppercase tracking-widest">
-              {['home', 'store', 'cart', 'repair', 'profile'].map((v) => (
-                <button key={v} onClick={() => navigateTo(v === 'profile' ? 'profile' : v)} className="hover:text-[#D4AF37] transition-colors">
+              {['home', 'store', 'cart', 'repair', 'trades', 'profile'].map((v) => (
+                <button key={v} onClick={() => navigateTo(v === 'profile' ? 'profile' : v)} className="hover:text-[#B38B21] transition-colors">
                   {v}
                 </button>
               ))}
