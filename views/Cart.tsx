@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Trash2, Plus, Minus, ArrowRight, ArrowLeft, ShieldCheck, ShoppingCart } from 'lucide-react';
 import { CartItem, Product } from '../types';

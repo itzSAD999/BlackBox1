@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { ArrowLeft, Minus, Plus, Heart, ShoppingBag, ShieldCheck, ShoppingCart, Download, FileText } from 'lucide-react';
 import { Product } from '../types';
