@@ -39,12 +39,12 @@ export const Auth: React.FC<AuthProps> = ({ setUser, navigateTo }) => {
       {/* LEFT SECTION: Visual Brand (Dark) */}
       <div className="w-full lg:w-[45%] bg-black p-12 lg:p-24 flex flex-col justify-between relative overflow-hidden">
         {/* Decorative Gradient Overlay */}
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#F1E5AC]/5 blur-[120px] rounded-full -mr-64 -mt-64"></div>
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#F1E5AC]/5 blur-[120px] rounded-full -ml-64 -mb-64"></div>
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#CDA032]/8 blur-[140px] rounded-full -mr-64 -mt-64"></div>
+        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#CDA032]/8 blur-[140px] rounded-full -ml-64 -mb-64"></div>
 
         <div className="relative z-10">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-[#F1E5AC] rounded flex items-center justify-center font-black text-black italic text-sm">B</div>
+            <div className="w-8 h-8 bg-[#CDA032] rounded flex items-center justify-center font-black text-black italic text-sm">B</div>
             <span className="text-sm font-black tracking-widest text-white uppercase italic">BLACK BOX.</span>
           </div>
         </div>
@@ -52,7 +52,7 @@ export const Auth: React.FC<AuthProps> = ({ setUser, navigateTo }) => {
         <div className="relative z-10 space-y-8 py-20 lg:py-0">
           <h1 className="text-6xl lg:text-[7rem] font-black italic tracking-tighter leading-[0.85] text-white uppercase">
             Login <br />
-            <span className="text-[#F1E5AC]">Page</span>
+            <span className="text-[#CDA032]">Page</span>
           </h1>
           <p className="text-lg lg:text-xl text-white/40 font-light italic leading-relaxed max-w-sm">
             Start your journey now with us and access the elite hardware repository.
@@ -89,7 +89,7 @@ export const Auth: React.FC<AuthProps> = ({ setUser, navigateTo }) => {
                   required
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="w-full bg-[#F5F5F5] border border-transparent rounded-2xl pl-12 pr-6 py-4 text-sm font-bold text-black outline-none focus:border-[#F1E5AC]/50 focus:bg-white transition-all placeholder:text-black/10"
+                  className="w-full bg-[#F5F5F5] border border-transparent rounded-2xl pl-12 pr-6 py-4 text-sm font-bold text-black outline-none focus:border-[#CDA032]/50 focus:bg-white transition-all placeholder:text-black/10"
                   placeholder="identity@blackbox.gh"
                 />
               </div>
@@ -107,7 +107,7 @@ export const Auth: React.FC<AuthProps> = ({ setUser, navigateTo }) => {
                   required
                   value={formData.password}
                   onChange={handleInputChange}
-                  className="w-full bg-[#F5F5F5] border border-transparent rounded-2xl pl-12 pr-12 py-4 text-sm font-bold text-black outline-none focus:border-[#F1E5AC]/50 focus:bg-white transition-all placeholder:text-black/10"
+                  className="w-full bg-[#F5F5F5] border border-transparent rounded-2xl pl-12 pr-12 py-4 text-sm font-bold text-black outline-none focus:border-[#CDA032]/50 focus:bg-white transition-all placeholder:text-black/10"
                   placeholder="••••••••"
                 />
                 <button 
@@ -122,7 +122,7 @@ export const Auth: React.FC<AuthProps> = ({ setUser, navigateTo }) => {
 
             <button 
               type="submit" 
-              className="w-full py-5 bg-[#F1E5AC] text-black font-black rounded-2xl text-xs uppercase tracking-[0.2em] shadow-xl hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-3 mt-4"
+              className="w-full py-5 bg-[#CDA032] text-black font-black rounded-2xl text-xs uppercase tracking-[0.2em] shadow-xl hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-3 mt-4"
             >
               {mode === 'login' ? 'Login now' : 'Create account'}
             </button>
@@ -134,9 +134,9 @@ export const Auth: React.FC<AuthProps> = ({ setUser, navigateTo }) => {
               className="text-[10px] font-black uppercase tracking-widest text-black/30 hover:text-black transition-all italic"
             >
               {mode === 'login' ? (
-                <>Don't have an account? <span className="text-[#F1E5AC] ml-1">Sign up</span></>
+                <>Don't have an account? <span className="text-[#CDA032] ml-1">Sign up</span></>
               ) : (
-                <>Already have an account? <span className="text-[#F1E5AC] ml-1">Log in</span></>
+                <>Already have an account? <span className="text-[#CDA032] ml-1">Log in</span></>
               )}
             </button>
           </div>

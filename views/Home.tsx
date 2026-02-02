@@ -88,7 +88,7 @@ export const Home: React.FC<HomeProps> = ({
           {/* Video loading indicator */}
           {!isVideoLoaded && (
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-16 h-16 border-4 border-[#B38B21]/20 border-t-[#B38B21] rounded-full animate-spin"></div>
+              <div className="w-16 h-16 border-4 border-[#CDA032]/20 border-t-[#CDA032] rounded-full animate-spin"></div>
             </div>
           )}
           
@@ -109,7 +109,7 @@ export const Home: React.FC<HomeProps> = ({
           {/* Enhanced Skip button with progress indicator */}
           <button 
             onClick={handleSkipVideo}
-            className="absolute bottom-10 right-10 px-8 py-4 bg-white/10 backdrop-blur-md hover:bg-[#B38B21]/20 text-white rounded-full text-[10px] font-black uppercase tracking-[0.4em] transition-all duration-300 border border-white/20 hover:border-[#B38B21]/50 hover:scale-105 active:scale-95 group"
+            className="absolute bottom-10 right-10 px-8 py-4 bg-white/10 backdrop-blur-md hover:bg-[#CDA032]/20 text-white rounded-full text-[10px] font-black uppercase tracking-[0.4em] transition-all duration-300 border border-white/20 hover:border-[#CDA032]/50 hover:scale-105 active:scale-95 group"
           >
             <span className="relative z-10">Skip Intro</span>
             <ArrowRight className="inline-block ml-2 transition-transform group-hover:translate-x-1" size={14} />
@@ -139,7 +139,7 @@ export const Home: React.FC<HomeProps> = ({
           {[...Array(20)].map((_, i) => (
             <div
               key={i}
-              className="absolute w-1 h-1 bg-[#B38B21]/20 rounded-full animate-float"
+              className="absolute w-1 h-1 bg-[#CDA032]/20 rounded-full animate-float"
               style={{
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
@@ -160,12 +160,12 @@ export const Home: React.FC<HomeProps> = ({
               <h1 className="text-5xl md:text-7xl lg:text-[7.5rem] font-serif-luxury font-black tracking-tighter leading-[0.9] uppercase italic text-white drop-shadow-2xl animate-in fade-in slide-in-from-left-8 duration-1000">
                 {currentHero.name.split(' ').slice(0, 2).join('\n')}
                 <br/>
-                <span className="text-[#B38B21] bg-gradient-to-r from-[#B38B21] to-[#D4AF37] bg-clip-text text-transparent animate-shimmer">
+                <span className="text-[#CDA032] bg-gradient-to-r from-[#CDA032] to-[#F1E08A] bg-clip-text text-transparent animate-shimmer">
                   {currentHero.name.split(' ').slice(2, 4).join(' ')}
                 </span>
               </h1>
               <p className="text-white/50 text-[9px] font-black uppercase tracking-[0.6em] italic flex items-center justify-center lg:justify-start gap-4 animate-in fade-in slide-in-from-left-8 duration-1000 delay-100">
-                / HIGH-FIDELITY HARDWARE / <span className="text-[#B38B21] animate-pulse">BRANCH: KUMASI</span>
+                / HIGH-FIDELITY HARDWARE / <span className="text-[#CDA032] animate-pulse">BRANCH: KUMASI</span>
               </p>
             </div>
             
@@ -176,7 +176,7 @@ export const Home: React.FC<HomeProps> = ({
             <Link 
               to="/product/$productId" 
               params={{ productId: currentHero.id } as any}
-              className="inline-flex px-14 py-6 bg-[#B38B21] text-black rounded-full text-[10px] font-black uppercase tracking-[0.4em] items-center gap-3 transition-all duration-300 hover:scale-105 hover:shadow-[0_20px_60px_rgba(179,139,33,0.6)] active:scale-95 shadow-[0_10px_40px_rgba(179,139,33,0.4)] animate-in fade-in slide-in-from-left-8 duration-1000 delay-300 group"
+              className="inline-flex px-14 py-6 bg-[#CDA032] text-black rounded-full text-[10px] font-black uppercase tracking-[0.4em] items-center gap-3 transition-all duration-300 hover:scale-105 hover:shadow-[0_20px_60px_rgba(205,160,50,0.6)] active:scale-95 shadow-[0_10px_40px_rgba(205,160,50,0.4)] animate-in fade-in slide-in-from-left-8 duration-1000 delay-300 group"
             >
               Buy Now 
               <ArrowRight className="transition-transform group-hover:translate-x-2" size={14} />
@@ -188,8 +188,8 @@ export const Home: React.FC<HomeProps> = ({
             className="flex-1 relative animate-in fade-in zoom-in-95 duration-1000"
           >
             {/* Enhanced glow effect */}
-            <div className="absolute inset-0 bg-[#B38B21]/20 blur-[150px] rounded-full animate-pulse-slow"></div>
-            <div className="absolute inset-0 bg-gradient-radial from-[#B38B21]/10 via-transparent to-transparent blur-2xl"></div>
+            <div className="absolute inset-0 bg-[#CDA032]/20 blur-[150px] rounded-full animate-pulse-slow"></div>
+            <div className="absolute inset-0 bg-gradient-radial from-[#CDA032]/10 via-transparent to-transparent blur-2xl"></div>
             
             {/* Image loading skeleton */}
             {!heroImageLoaded && (
@@ -214,7 +214,7 @@ export const Home: React.FC<HomeProps> = ({
       <section className="py-20 px-8 bg-black relative overflow-hidden">
         {/* Subtle background pattern */}
         <div className="absolute inset-0 opacity-5" style={{
-          backgroundImage: 'radial-gradient(circle at 2px 2px, #B38B21 1px, transparent 0)',
+          backgroundImage: 'radial-gradient(circle at 2px 2px, #CDA032 1px, transparent 0)',
           backgroundSize: '40px 40px'
         }}></div>
         
@@ -232,7 +232,7 @@ export const Home: React.FC<HomeProps> = ({
               key={i}
               to={cat.name === 'Trades' ? '/trades' : '/store'}
               onClick={() => cat.name !== 'Trades' && setSelectedCategory(cat.name)}
-              className="group relative h-[600px] bg-[#0f0f0f] border border-white/5 rounded-[3rem] overflow-hidden transition-all duration-700 hover:border-[#B38B21]/50 flex flex-col hover:shadow-[0_20px_60px_rgba(179,139,33,0.2)] hover:-translate-y-2"
+              className="group relative h-[600px] bg-[#0f0f0f] border border-white/5 rounded-[3rem] overflow-hidden transition-all duration-700 hover:border-[#CDA032]/50 flex flex-col hover:shadow-[0_20px_60px_rgba(205,160,50,0.2)] hover:-translate-y-2"
               style={{ animationDelay: `${i * 100}ms` }}
             >
               {/* Enhanced image effects */}
@@ -244,17 +244,17 @@ export const Home: React.FC<HomeProps> = ({
               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-700"></div>
 
               <div className="relative z-10 p-10 flex justify-between items-start">
-                 <div className={`w-16 h-16 ${cat.active ? 'bg-[#B38B21] text-black' : 'bg-white/5 text-white/40 border border-white/10'} rounded-[1.2rem] flex items-center justify-center transition-all duration-500 group-hover:bg-[#B38B21] group-hover:text-black group-hover:scale-110 group-hover:rotate-6 shadow-xl`}>
+                 <div className={`w-16 h-16 ${cat.active ? 'bg-[#CDA032] text-black' : 'bg-white/5 text-white/40 border border-white/10'} rounded-[1.2rem] flex items-center justify-center transition-all duration-500 group-hover:bg-[#CDA032] group-hover:text-black group-hover:scale-110 group-hover:rotate-6 shadow-xl`}>
                     <cat.icon size={28} className="transition-transform group-hover:scale-110" />
                  </div>
-                 <span className="bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest text-white/60 group-hover:bg-[#B38B21]/20 transition-colors">{cat.units}</span>
+                 <span className="bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest text-white/60 group-hover:bg-[#CDA032]/20 transition-colors">{cat.units}</span>
               </div>
 
               <div className="relative mt-auto z-10 p-10 space-y-4 bg-gradient-to-t from-black via-black/90 to-transparent pt-32">
-                 <h3 className="text-4xl font-black italic uppercase tracking-tighter leading-none group-hover:text-[#B38B21] transition-all duration-300 transform group-hover:translate-x-2">{cat.name}</h3>
+                 <h3 className="text-4xl font-black italic uppercase tracking-tighter leading-none group-hover:text-[#CDA032] transition-all duration-300 transform group-hover:translate-x-2">{cat.name}</h3>
                  <p className="text-[9px] text-white/40 font-bold uppercase tracking-[0.2em] leading-relaxed max-w-[200px] group-hover:text-white/60 transition-colors">{cat.desc}</p>
                  <div className="pt-4 opacity-0 group-hover:opacity-100 transition-all translate-y-4 group-hover:translate-y-0 duration-500">
-                    <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#B38B21] flex items-center gap-3">
+                    <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#CDA032] flex items-center gap-3">
                       ENTER LAB <ArrowRight className="transition-transform group-hover:translate-x-2" size={14} />
                     </span>
                  </div>
@@ -277,13 +277,13 @@ export const Home: React.FC<HomeProps> = ({
               Items Available
             </h2>
             <p className="text-white/20 text-[10px] font-black uppercase tracking-[0.5em] italic flex items-center gap-2">
-              <Sparkles size={12} className="text-[#B38B21]" />
+              <Sparkles size={12} className="text-[#CDA032]" />
               / Items Available
             </p>
           </div>
           <Link 
             to="/store" 
-            className="text-[10px] font-black uppercase tracking-[0.4em] border-b-2 border-[#B38B21]/50 pb-1 hover:text-[#B38B21] hover:border-[#B38B21] transition-all duration-300 flex items-center gap-4 group"
+            className="text-[10px] font-black uppercase tracking-[0.4em] border-b-2 border-[#CDA032]/50 pb-1 hover:text-[#CDA032] hover:border-[#CDA032] transition-all duration-300 flex items-center gap-4 group"
           >
             Explore Repository 
             <ChevronRight className="transition-transform group-hover:translate-x-1" size={14} />
@@ -318,10 +318,10 @@ export const Home: React.FC<HomeProps> = ({
            <div className="absolute inset-0 bg-gradient-to-br from-[#B38B21]/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
            
            <div className="flex-1 space-y-10 z-10">
-              <span className="text-[#B38B21] text-[10px] font-black uppercase tracking-[0.6em] flex items-center gap-6 opacity-60 italic group-hover:opacity-100 transition-opacity">
-                <div className="w-16 h-[1px] bg-[#B38B21] group-hover:w-24 transition-all duration-500"></div> LAB SESSION
+              <span className="text-[#CDA032] text-[10px] font-black uppercase tracking-[0.6em] flex items-center gap-6 opacity-60 italic group-hover:opacity-100 transition-opacity">
+                <div className="w-16 h-[1px] bg-[#CDA032] group-hover:w-24 transition-all duration-500"></div> LAB SESSION
               </span>
-              <h3 className="text-5xl md:text-8xl font-serif-luxury font-black italic tracking-tighter leading-[0.8] uppercase text-white group-hover:text-[#B38B21] transition-colors duration-500">
+              <h3 className="text-5xl md:text-8xl font-serif-luxury font-black italic tracking-tighter leading-[0.8] uppercase text-white group-hover:text-[#CDA032] transition-colors duration-500">
                 Technical Bench.
               </h3>
               <p className="text-lg text-white/40 font-light leading-relaxed max-w-xl italic group-hover:text-white/60 transition-colors">
@@ -329,7 +329,7 @@ export const Home: React.FC<HomeProps> = ({
               </p>
               <Link 
                 to="/repair"
-                className="inline-flex px-12 py-6 bg-[#B38B21] text-black font-black rounded-full uppercase tracking-[0.4em] text-[10px] items-center gap-4 transition-all duration-300 hover:scale-105 hover:shadow-[0_20px_60px_rgba(179,139,33,0.3)] active:scale-95 shadow-[0_10px_40px_rgba(179,139,33,0.1)] group/btn"
+                className="inline-flex px-12 py-6 bg-[#CDA032] text-black font-black rounded-full uppercase tracking-[0.4em] text-[10px] items-center gap-4 transition-all duration-300 hover:scale-105 hover:shadow-[0_20px_60px_rgba(205,160,50,0.3)] active:scale-95 shadow-[0_10px_40px_rgba(205,160,50,0.1)] group/btn"
               >
                 Schedule Diagnostic 
                 <ArrowRight className="transition-transform group-hover/btn:translate-x-2" size={16} />
@@ -337,13 +337,13 @@ export const Home: React.FC<HomeProps> = ({
            </div>
            
            <div className="flex-1 w-full relative">
-              <div className="absolute inset-0 bg-[#B38B21]/5 blur-[120px] rounded-full group-hover:bg-[#B38B21]/15 transition-all duration-1000"></div>
+              <div className="absolute inset-0 bg-[#CDA032]/5 blur-[120px] rounded-full group-hover:bg-[#CDA032]/15 transition-all duration-1000"></div>
               <img 
                 src="https://images.unsplash.com/photo-1517336714467-d13a2323485d" 
                 className="rounded-[3rem] w-full object-cover aspect-video grayscale opacity-20 transition-all duration-[2s] group-hover:opacity-50 group-hover:grayscale-0 group-hover:scale-105"
                 alt="Lab"
               />
-              <div className="absolute top-10 right-10 bg-[#B38B21] text-black px-6 py-3 rounded-full flex items-center gap-4 shadow-2xl group-hover:scale-110 transition-transform duration-300">
+              <div className="absolute top-10 right-10 bg-[#CDA032] text-black px-6 py-3 rounded-full flex items-center gap-4 shadow-2xl group-hover:scale-110 transition-transform duration-300">
                 <Zap size={18} className="animate-pulse" />
                 <span className="text-[10px] font-black uppercase tracking-widest">Live Lab</span>
               </div>

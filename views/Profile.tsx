@@ -1,10 +1,9 @@
-
 import React, { useState } from 'react';
 import { 
   LogOut, Package, Wrench, Clock, CheckCircle2, 
   MapPin, Mail, ChevronRight, Activity, Shield, CreditCard,
   Truck, XCircle, User as UserIcon, Settings, Heart, Sliders, HelpCircle,
-  Eye, RefreshCw, Smartphone, Trash2
+  Eye, RefreshCw, Smartphone, Trash2, Download, FileText, AlertCircle
 } from 'lucide-react';
 import { User, RepairRequest, Order, Product } from '../types';
 import { formatDate, formatCurrency } from '../lib/utils';
@@ -29,9 +28,21 @@ export const Profile: React.FC<ProfileProps> = ({
 
   if (!user) return (
     <div className="min-h-screen bg-black flex items-center justify-center p-6">
-      <button onClick={() => navigateTo('auth')} className="px-12 py-5 bg-white text-black font-black rounded-2xl text-xs uppercase tracking-[0.2em] hover:scale-105 transition-all shadow-2xl">
-        Sign In to View Repository
-      </button>
+      <div className="text-center space-y-6">
+        <div className="w-20 h-20 mx-auto bg-white/5 rounded-full flex items-center justify-center border border-white/10">
+          <UserIcon size={32} className="text-white/20" />
+        </div>
+        <div className="space-y-2">
+          <h2 className="text-xl font-black uppercase tracking-tight italic text-white">Access Required</h2>
+          <p className="text-[10px] font-bold uppercase tracking-widest text-white/30">Sign in to view your repository</p>
+        </div>
+        <button 
+          onClick={() => navigateTo('auth')} 
+          className="px-10 py-4 bg-gradient-to-r from-[#B38B21] to-[#D4AF37] text-black font-black rounded-full text-[10px] uppercase tracking-[0.3em] hover:scale-105 transition-all shadow-[0_10px_40px_rgba(179,139,33,0.3)]"
+        >
+          Sign In
+        </button>
+      </div>
     </div>
   );
 
@@ -40,12 +51,12 @@ export const Profile: React.FC<ProfileProps> = ({
 
   const menuItems = [
     { id: 'overview', icon: Sliders, label: 'Overview' },
-    { id: 'orders', icon: Package, label: 'Order History', badge: orders.length > 0 ? orders.length : null },
-    { id: 'repairs', icon: Wrench, label: 'Repair Requests', badge: activeRepairsCount > 0 ? activeRepairsCount : null },
+    { id: 'orders', icon: Package, label: 'Orders', badge: orders.length > 0 ? orders.length : null },
+    { id: 'repairs', icon: Wrench, label: 'Repairs', badge: activeRepairsCount > 0 ? activeRepairsCount : null },
     { id: 'wishlist', icon: Heart, label: 'Wishlist', badge: wishlist.length > 0 ? wishlist.length : null },
-    { id: 'settings', icon: UserIcon, label: 'Profile Settings' },
-    { id: 'address', icon: MapPin, label: 'Address Book' },
-    { id: 'payment', icon: CreditCard, label: 'Payment Methods' },
+    { id: 'settings', icon: UserIcon, label: 'Settings' },
+    { id: 'address', icon: MapPin, label: 'Addresses' },
+    { id: 'payment', icon: CreditCard, label: 'Payment' },
     { id: 'preferences', icon: Settings, label: 'Preferences' },
   ];
 
@@ -53,44 +64,68 @@ export const Profile: React.FC<ProfileProps> = ({
     switch (activeTab) {
       case 'overview':
         return (
-          <div className="space-y-8 animate-in fade-in duration-500">
+          <div className="space-y-6 animate-in fade-in duration-500">
             {/* Greeting Banner */}
-            <div className="bg-[#0f0f0f] border border-white/5 rounded-[2.5rem] p-8 md:p-12 flex flex-col md:flex-row justify-between items-center gap-8 relative overflow-hidden shadow-2xl">
-              <div className="z-10 space-y-3 text-center md:text-left">
-                <h2 className="text-3xl md:text-5xl font-black italic tracking-tighter uppercase leading-none">Good evening, {user.name}!</h2>
-                <p className="text-[11px] font-bold uppercase tracking-[0.4em] text-white/20 italic">Member since {formatDate(new Date().toISOString())}</p>
+            <div className="bg-gradient-to-br from-[#0a0a0a] to-[#050505] border border-white/5 rounded-3xl p-8 md:p-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 relative overflow-hidden shadow-xl">
+              <div className="z-10 space-y-2">
+                <h2 className="text-2xl md:text-3xl font-black italic tracking-tight uppercase leading-tight">
+                  Welcome back, {user.name}
+                </h2>
+                <p className="text-[9px] font-bold uppercase tracking-[0.4em] text-white/30 italic flex items-center gap-2">
+                  <CheckCircle2 size={10} className="text-green-400" />
+                  Member since {formatDate(new Date().toISOString())}
+                </p>
               </div>
-              <div className="z-10 bg-white/10 border border-white/20 px-6 py-2.5 rounded-full flex items-center gap-3">
-                 <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-                 <span className="text-[10px] font-black uppercase tracking-widest text-white">Verified Identity</span>
+              <div className="z-10 bg-white/5 border border-white/10 px-5 py-2 rounded-full flex items-center gap-2">
+                 <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></div>
+                 <span className="text-[9px] font-black uppercase tracking-wider text-white/60">Verified</span>
               </div>
-              <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 blur-[100px] rounded-full -mr-20 -mt-20"></div>
+              <div className="absolute top-0 right-0 w-64 h-64 bg-[#B38B21]/[0.05] blur-[120px] rounded-full -mr-20 -mt-20"></div>
             </div>
 
             {/* Overview Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               {[
-                { id: 'orders', label: 'Recent Orders', value: orders.length, sub: 'Acquisitions', icon: Package },
-                { id: 'repairs', label: 'Active Repairs', value: activeRepairsCount, sub: 'Bench Status', icon: Wrench },
-                { id: 'wishlist', label: 'Wishlist Items', value: wishlist.length, sub: 'Saved units', icon: Heart },
+                { id: 'orders', label: 'Orders', value: orders.length, sub: 'Total acquisitions', icon: Package, color: 'from-blue-500/20 to-blue-600/10' },
+                { id: 'repairs', label: 'Active Repairs', value: activeRepairsCount, sub: 'In diagnostics', icon: Wrench, color: 'from-orange-500/20 to-orange-600/10' },
+                { id: 'wishlist', label: 'Wishlist', value: wishlist.length, sub: 'Saved items', icon: Heart, color: 'from-red-500/20 to-red-600/10' },
               ].map((stat, i) => (
-                <div 
+                <button 
                   key={i} 
                   onClick={() => setActiveTab(stat.id as any)}
-                  className="p-10 rounded-[2.5rem] space-y-8 cursor-pointer relative group bg-[#0f0f0f] border border-white/5 hover:border-white/20 transition-all shadow-xl"
+                  className="p-6 rounded-2xl space-y-5 relative group bg-gradient-to-br from-[#0a0a0a] to-[#050505] border border-white/5 hover:border-white/20 transition-all shadow-lg hover:shadow-2xl text-left"
                 >
-                  <div className="flex justify-between items-center">
-                    <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center text-white">
-                      <stat.icon size={22} />
+                  <div className="flex justify-between items-start">
+                    <div className={`w-10 h-10 bg-gradient-to-br ${stat.color} rounded-xl flex items-center justify-center text-white border border-white/10 group-hover:scale-110 transition-transform`}>
+                      <stat.icon size={18} />
                     </div>
-                    <ChevronRight size={18} className="text-white/10 group-hover:translate-x-1 group-hover:text-white transition-all" />
+                    <ChevronRight size={16} className="text-white/10 group-hover:translate-x-1 group-hover:text-white/30 transition-all" />
                   </div>
                   <div className="space-y-1">
-                    <p className="text-[10px] text-white/40 uppercase font-black tracking-[0.2em]">{stat.label}</p>
-                    <p className="text-5xl font-black italic tracking-tighter">{stat.value}</p>
-                    <p className="text-[10px] text-white/20 uppercase tracking-widest pt-2 italic">{stat.sub}</p>
+                    <p className="text-[9px] text-white/40 uppercase font-black tracking-wider">{stat.label}</p>
+                    <p className="text-3xl font-black italic tracking-tight">{stat.value}</p>
+                    <p className="text-[8px] text-white/20 uppercase tracking-wider italic">{stat.sub}</p>
                   </div>
-                </div>
+                </button>
+              ))}
+            </div>
+
+            {/* Quick Actions */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[
+                { icon: Package, label: 'Track Order', action: () => setActiveTab('orders') },
+                { icon: Wrench, label: 'Book Repair', action: () => navigateTo('repair') },
+                { icon: Heart, label: 'View Wishlist', action: () => setActiveTab('wishlist') },
+                { icon: FileText, label: 'Invoices', action: () => {} },
+              ].map((action, i) => (
+                <button
+                  key={i}
+                  onClick={action.action}
+                  className="p-4 bg-white/[0.02] border border-white/5 rounded-xl hover:border-[#B38B21]/30 hover:bg-white/[0.05] transition-all group"
+                >
+                  <action.icon size={16} className="text-white/30 group-hover:text-[#B38B21] transition-colors mb-2" />
+                  <p className="text-[9px] font-black uppercase tracking-wider text-white/50 group-hover:text-white transition-colors">{action.label}</p>
+                </button>
               ))}
             </div>
           </div>
@@ -98,43 +133,60 @@ export const Profile: React.FC<ProfileProps> = ({
 
       case 'orders':
         return (
-          <div className="bg-[#0f0f0f] border border-white/5 rounded-[2.5rem] overflow-hidden shadow-2xl animate-in slide-in-from-bottom-4 duration-500">
-             <div className="p-10 border-b border-white/5">
-               <h3 className="text-2xl font-black italic uppercase tracking-tighter">Order Repository</h3>
-               <p className="text-[10px] font-bold uppercase tracking-widest text-white/20 pt-1 italic">Authorized acquisitions and hardware receipts</p>
+          <div className="bg-gradient-to-br from-[#0a0a0a] to-[#050505] border border-white/5 rounded-3xl overflow-hidden shadow-xl animate-in slide-in-from-bottom-4 duration-500">
+             <div className="p-8 border-b border-white/10">
+               <div className="flex items-center justify-between">
+                 <div>
+                   <h3 className="text-xl font-black italic uppercase tracking-tight flex items-center gap-3">
+                     <Package size={20} className="text-[#B38B21]" />
+                     Order History
+                   </h3>
+                   <p className="text-[9px] font-bold uppercase tracking-wider text-white/30 pt-1 italic">All your acquisitions</p>
+                 </div>
+                 <button className="text-[9px] font-black uppercase tracking-wider text-white/40 hover:text-[#B38B21] transition-colors flex items-center gap-2">
+                   <Download size={12} />
+                   Export
+                 </button>
+               </div>
              </div>
              
              {orders.length > 0 ? (
                <div className="overflow-x-auto">
                  <table className="w-full text-left">
-                   <thead className="text-[10px] font-black uppercase tracking-widest text-white/20 border-b border-white/5">
+                   <thead className="text-[9px] font-black uppercase tracking-wider text-white/30 border-b border-white/5 bg-black/20">
                      <tr>
-                       <th className="px-10 py-6">Order ID</th>
-                       <th className="px-6 py-6">Date</th>
-                       <th className="px-6 py-6">Status</th>
-                       <th className="px-6 py-6">Items</th>
-                       <th className="px-6 py-6">Total</th>
-                       <th className="px-10 py-6 text-right">Actions</th>
+                       <th className="px-8 py-4">Order</th>
+                       <th className="px-4 py-4">Date</th>
+                       <th className="px-4 py-4">Status</th>
+                       <th className="px-4 py-4">Items</th>
+                       <th className="px-4 py-4">Total</th>
+                       <th className="px-8 py-4 text-right">Actions</th>
                      </tr>
                    </thead>
-                   <tbody className="text-[11px] font-bold uppercase tracking-widest">
-                     {orders.map(order => (
-                       <tr key={order.id} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
-                         <td className="px-10 py-8 font-black">#{order.id}</td>
-                         <td className="px-6 py-8 text-white/30 italic">{formatDate(order.date)}</td>
-                         <td className="px-6 py-8">
-                           <span className={`px-4 py-1.5 rounded-full text-[9px] font-black ${
-                             order.status === 'Delivered' ? 'bg-white/10 text-white' : 
-                             order.status === 'Shipped' ? 'bg-white/5 text-white/60' : 
-                             'bg-white/5 text-white/30'
+                   <tbody className="text-[10px] font-bold">
+                     {orders.map((order, i) => (
+                       <tr 
+                         key={order.id} 
+                         className="border-b border-white/5 hover:bg-white/[0.02] transition-colors"
+                         style={{ animationDelay: `${i * 50}ms` }}
+                       >
+                         <td className="px-8 py-5 font-black text-white">#{order.id}</td>
+                         <td className="px-4 py-5 text-white/40 text-[9px]">{formatDate(order.date)}</td>
+                         <td className="px-4 py-5">
+                           <span className={`px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-wider ${
+                             order.status === 'Delivered' ? 'bg-green-500/20 text-green-400 border border-green-500/30' : 
+                             order.status === 'Shipped' ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' : 
+                             'bg-white/5 text-white/40 border border-white/10'
                            }`}>
                              {order.status}
                            </span>
                          </td>
-                         <td className="px-6 py-8 text-white/30">{order.items.length} units</td>
-                         <td className="px-6 py-8 text-white font-black">{formatCurrency(order.total)}</td>
-                         <td className="px-10 py-8 text-right space-x-6">
-                           <button className="text-white/20 hover:text-white transition-colors"><Eye size={18}/></button>
+                         <td className="px-4 py-5 text-white/40">{order.items.length}</td>
+                         <td className="px-4 py-5 text-white font-black">{formatCurrency(order.total)}</td>
+                         <td className="px-8 py-5 text-right">
+                           <button className="text-white/30 hover:text-white transition-colors p-2 hover:bg-white/5 rounded-lg">
+                             <Eye size={16}/>
+                           </button>
                          </td>
                        </tr>
                      ))}
@@ -142,9 +194,17 @@ export const Profile: React.FC<ProfileProps> = ({
                  </table>
                </div>
              ) : (
-               <div className="py-24 text-center opacity-20">
-                 <Package size={48} className="mx-auto mb-4" />
-                 <p className="text-[10px] font-black uppercase tracking-[0.3em]">No history detected</p>
+               <div className="py-20 text-center">
+                 <div className="w-16 h-16 mx-auto bg-white/5 rounded-2xl flex items-center justify-center mb-4 border border-white/10">
+                   <Package size={24} className="text-white/20" />
+                 </div>
+                 <p className="text-[10px] font-black uppercase tracking-wider text-white/20">No orders yet</p>
+                 <button 
+                   onClick={() => navigateTo('store')}
+                   className="mt-4 px-6 py-3 bg-white/5 hover:bg-white/10 rounded-full text-[9px] font-black uppercase tracking-wider transition-all"
+                 >
+                   Start Shopping
+                 </button>
                </div>
              )}
           </div>
@@ -152,42 +212,73 @@ export const Profile: React.FC<ProfileProps> = ({
 
       case 'repairs':
         return (
-          <div className="bg-[#0f0f0f] border border-white/5 rounded-[2.5rem] overflow-hidden shadow-2xl animate-in slide-in-from-bottom-4 duration-500">
-             <div className="p-10 border-b border-white/5">
-               <h3 className="text-2xl font-black italic uppercase tracking-tighter">Laboratory Status</h3>
-               <p className="text-[10px] font-bold uppercase tracking-widest text-white/20 pt-1 italic">Active diagnostic sessions</p>
+          <div className="bg-gradient-to-br from-[#0a0a0a] to-[#050505] border border-white/5 rounded-3xl overflow-hidden shadow-xl animate-in slide-in-from-bottom-4 duration-500">
+             <div className="p-8 border-b border-white/10">
+               <div className="flex items-center justify-between">
+                 <div>
+                   <h3 className="text-xl font-black italic uppercase tracking-tight flex items-center gap-3">
+                     <Wrench size={20} className="text-[#B38B21]" />
+                     Repair Requests
+                   </h3>
+                   <p className="text-[9px] font-bold uppercase tracking-wider text-white/30 pt-1 italic">Diagnostic sessions</p>
+                 </div>
+                 <button 
+                   onClick={() => navigateTo('repair')}
+                   className="px-5 py-2 bg-[#B38B21]/20 hover:bg-[#B38B21]/30 border border-[#B38B21]/30 rounded-full text-[9px] font-black uppercase tracking-wider text-[#B38B21] transition-all"
+                 >
+                   New Request
+                 </button>
+               </div>
              </div>
              
              {repairs.length > 0 ? (
-               <div className="p-10 space-y-4">
-                 {repairs.map(repair => (
-                   <div key={repair.id} className="bg-black/40 border border-white/5 rounded-2xl p-6 flex flex-col md:flex-row items-center justify-between gap-6 group hover:border-white/30 transition-all">
-                     <div className="flex items-center gap-6 w-full md:w-auto">
-                        <div className="w-14 h-14 bg-white/5 rounded-xl flex items-center justify-center text-white">
-                          <Smartphone size={24} />
+               <div className="p-6 space-y-3">
+                 {repairs.map((repair, i) => (
+                   <div 
+                     key={repair.id} 
+                     className="bg-black/40 border border-white/5 rounded-2xl p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 group hover:border-white/20 transition-all"
+                     style={{ animationDelay: `${i * 50}ms` }}
+                   >
+                     <div className="flex items-center gap-4 w-full md:w-auto">
+                        <div className="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center text-white border border-white/10 shrink-0">
+                          <Smartphone size={20} />
                         </div>
-                        <div className="space-y-1">
-                          <p className="text-xs font-black uppercase tracking-widest">{repair.device}</p>
-                          <p className="text-[10px] text-white/30 font-bold uppercase tracking-widest italic truncate max-w-[200px]">{repair.issue}</p>
-                          <p className="text-[9px] text-white/10 font-black uppercase tracking-widest">{formatDate(repair.date)}</p>
+                        <div className="space-y-1 min-w-0">
+                          <p className="text-[11px] font-black uppercase tracking-wide truncate">{repair.device}</p>
+                          <p className="text-[9px] text-white/40 font-bold truncate">{repair.issue}</p>
+                          <p className="text-[8px] text-white/20 font-black uppercase tracking-wider">{formatDate(repair.date)}</p>
                         </div>
                      </div>
-                     <div className="flex items-center gap-8 w-full md:w-auto justify-between md:justify-end">
+                     <div className="flex items-center gap-4 w-full md:w-auto justify-between md:justify-end">
                         <div className="text-right">
-                           <p className="text-[9px] font-black text-white/20 uppercase tracking-widest mb-1">Bench Status</p>
-                           <span className="px-4 py-1.5 bg-white text-black text-[9px] font-black rounded-full uppercase tracking-widest">
+                           <p className="text-[8px] font-black text-white/30 uppercase tracking-wider mb-1">Status</p>
+                           <span className={`px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-wider inline-block ${
+                             repair.status === 'Completed' ? 'bg-green-500/20 text-green-400 border border-green-500/30' :
+                             repair.status === 'In Progress' ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' :
+                             'bg-orange-500/20 text-orange-400 border border-orange-500/30'
+                           }`}>
                              {repair.status}
                            </span>
                         </div>
-                        <button className="p-3 bg-white/5 rounded-full text-white/20 hover:text-white transition-all"><ChevronRight size={18}/></button>
+                        <button className="p-2 bg-white/5 hover:bg-white/10 rounded-lg text-white/30 hover:text-white transition-all">
+                          <ChevronRight size={16}/>
+                        </button>
                      </div>
                    </div>
                  ))}
                </div>
              ) : (
-               <div className="py-24 text-center opacity-20">
-                 <Wrench size={48} className="mx-auto mb-4" />
-                 <p className="text-[10px] font-black uppercase tracking-[0.3em]">No laboratory requests found</p>
+               <div className="py-20 text-center">
+                 <div className="w-16 h-16 mx-auto bg-white/5 rounded-2xl flex items-center justify-center mb-4 border border-white/10">
+                   <Wrench size={24} className="text-white/20" />
+                 </div>
+                 <p className="text-[10px] font-black uppercase tracking-wider text-white/20">No repair requests</p>
+                 <button 
+                   onClick={() => navigateTo('repair')}
+                   className="mt-4 px-6 py-3 bg-white/5 hover:bg-white/10 rounded-full text-[9px] font-black uppercase tracking-wider transition-all"
+                 >
+                   Book Repair
+                 </button>
                </div>
              )}
           </div>
@@ -195,30 +286,55 @@ export const Profile: React.FC<ProfileProps> = ({
 
       case 'wishlist':
         return (
-          <div className="space-y-8 animate-in slide-in-from-bottom-4 duration-500">
-            <div className="bg-[#0f0f0f] p-10 border border-white/5 rounded-[2.5rem]">
-               <h3 className="text-2xl font-black italic uppercase tracking-tighter">Wishlist Collection</h3>
-               <p className="text-[10px] font-bold uppercase tracking-widest text-white/20 pt-1 italic">Saved hardware units</p>
+          <div className="space-y-6 animate-in slide-in-from-bottom-4 duration-500">
+            <div className="bg-gradient-to-br from-[#0a0a0a] to-[#050505] p-8 border border-white/5 rounded-3xl flex items-center justify-between">
+               <div>
+                 <h3 className="text-xl font-black italic uppercase tracking-tight flex items-center gap-3">
+                   <Heart size={20} className="text-[#B38B21]" />
+                   Wishlist
+                 </h3>
+                 <p className="text-[9px] font-bold uppercase tracking-wider text-white/30 pt-1 italic">{wishlist.length} saved items</p>
+               </div>
+               {wishlist.length > 0 && (
+                 <button className="text-[9px] font-black uppercase tracking-wider text-white/40 hover:text-red-400 transition-colors flex items-center gap-2">
+                   <Trash2 size={12} />
+                   Clear All
+                 </button>
+               )}
             </div>
             {wishlistedProducts.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                {wishlistedProducts.map(p => (
-                  <ProductCard 
-                    key={p.id} 
-                    product={p} 
-                    onQuickView={() => {}} 
-                    isWishlisted={true}
-                    onToggleWishlist={toggleWishlist}
-                    onAddToCart={onAddToCart}
-                    isCompared={false}
-                    onToggleCompare={() => {}}
-                  />
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {wishlistedProducts.map((p, i) => (
+                  <div 
+                    key={p.id}
+                    className="animate-in fade-in slide-in-from-bottom-4"
+                    style={{ animationDelay: `${i * 50}ms` }}
+                  >
+                    <ProductCard 
+                      product={p} 
+                      onQuickView={() => {}} 
+                      isWishlisted={true}
+                      onToggleWishlist={toggleWishlist}
+                      onAddToCart={onAddToCart}
+                      isCompared={false}
+                      onToggleCompare={() => {}}
+                    />
+                  </div>
                 ))}
               </div>
             ) : (
-              <div className="py-32 text-center bg-[#0f0f0f] border border-white/5 rounded-[2.5rem] opacity-20">
-                <Heart size={48} className="mx-auto mb-4" />
-                <p className="text-[10px] font-black uppercase tracking-[0.3em]">Wishlist is void</p>
+              <div className="py-20 text-center bg-gradient-to-br from-[#0a0a0a] to-[#050505] border border-white/5 rounded-3xl">
+                <div className="w-16 h-16 mx-auto bg-white/5 rounded-2xl flex items-center justify-center mb-4 border border-white/10">
+                  <Heart size={24} className="text-white/20" />
+                </div>
+                <p className="text-[10px] font-black uppercase tracking-wider text-white/20 mb-2">Your wishlist is empty</p>
+                <p className="text-[9px] text-white/10 mb-4">Start adding items you love</p>
+                <button 
+                  onClick={() => navigateTo('store')}
+                  className="px-6 py-3 bg-white/5 hover:bg-white/10 rounded-full text-[9px] font-black uppercase tracking-wider transition-all"
+                >
+                  Browse Store
+                </button>
               </div>
             )}
           </div>
@@ -226,44 +342,59 @@ export const Profile: React.FC<ProfileProps> = ({
 
       default:
         return (
-          <div className="bg-[#0f0f0f] border border-white/5 rounded-[2.5rem] p-16 text-center animate-in fade-in duration-500">
-             <Settings size={48} className="mx-auto mb-8 opacity-10" />
-             <h3 className="text-xl font-black uppercase italic tracking-tighter text-white/30">System Maintenance</h3>
-             <p className="text-[10px] font-bold uppercase tracking-widest text-white/10 mt-2 italic">Repository update coming soon</p>
+          <div className="bg-gradient-to-br from-[#0a0a0a] to-[#050505] border border-white/5 rounded-3xl p-16 text-center animate-in fade-in duration-500">
+             <div className="w-16 h-16 mx-auto bg-white/5 rounded-2xl flex items-center justify-center mb-6 border border-white/10">
+               <Settings size={24} className="text-white/20" />
+             </div>
+             <h3 className="text-lg font-black uppercase italic tracking-tight text-white/40 mb-2">Coming Soon</h3>
+             <p className="text-[9px] font-bold uppercase tracking-wider text-white/20 italic">This section is under development</p>
           </div>
         );
     }
   };
 
   return (
-    <div className="view-transition max-w-[1440px] mx-auto px-6 md:px-8 py-12 flex flex-col lg:flex-row gap-10 min-h-[85vh] bg-black">
+    <div className="view-transition max-w-[1600px] mx-auto px-6 md:px-8 py-12 flex flex-col lg:flex-row gap-8 min-h-[85vh] bg-black relative overflow-hidden">
+      {/* Background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-[#B38B21]/[0.02] blur-[120px] rounded-full -ml-[250px] -mt-[250px]"></div>
+      </div>
+
       {/* Sidebar Navigation */}
-      <aside className="w-full lg:w-[320px] shrink-0">
-        <div className="bg-[#0f0f0f] border border-white/5 rounded-[2.5rem] p-4 flex flex-col shadow-2xl lg:sticky lg:top-32">
+      <aside className="w-full lg:w-[280px] shrink-0 relative z-10">
+        <div className="bg-gradient-to-br from-[#0a0a0a] to-[#050505] border border-white/5 rounded-3xl p-5 flex flex-col shadow-xl lg:sticky lg:top-24">
           {/* User Profile Summary */}
-          <div className="p-6 pb-8 border-b border-white/5 space-y-4 text-center lg:text-left">
-             <div className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center font-black text-black italic text-3xl shadow-2xl mx-auto lg:mx-0">
+          <div className="p-5 pb-6 border-b border-white/10 space-y-4">
+             <div className="w-16 h-16 bg-gradient-to-br from-[#B38B21] to-[#D4AF37] rounded-2xl flex items-center justify-center font-black text-black italic text-2xl shadow-lg">
                {user.name.charAt(0)}
              </div>
              <div>
-                <h4 className="text-lg font-black italic tracking-tighter uppercase leading-none">{user.name}</h4>
-                <p className="text-[10px] font-bold text-white/20 uppercase tracking-widest italic mt-1">{user.email}</p>
+                <h4 className="text-base font-black italic tracking-tight uppercase leading-tight">{user.name}</h4>
+                <p className="text-[9px] font-bold text-white/30 uppercase tracking-wider italic mt-1 truncate">{user.email}</p>
              </div>
           </div>
 
-          <div className="flex flex-col gap-1 mt-4">
+          <div className="flex flex-col gap-1 mt-3">
             {menuItems.map((item) => (
               <button 
                 key={item.id}
                 onClick={() => setActiveTab(item.id as any)}
-                className={`flex items-center justify-between px-6 py-4 rounded-2xl transition-all group ${activeTab === item.id ? 'bg-white text-black font-black' : 'text-white/40 hover:bg-white/5 hover:text-white'}`}
+                className={`flex items-center justify-between px-5 py-3 rounded-xl transition-all group ${
+                  activeTab === item.id 
+                    ? 'bg-gradient-to-r from-[#B38B21] to-[#D4AF37] text-black font-black shadow-lg' 
+                    : 'text-white/50 hover:bg-white/5 hover:text-white'
+                }`}
               >
-                <div className="flex items-center gap-4">
-                  <item.icon size={18} className={activeTab === item.id ? 'text-black' : 'text-white/20 group-hover:text-white'} />
-                  <span className="text-[11px] font-bold uppercase tracking-widest">{item.label}</span>
+                <div className="flex items-center gap-3">
+                  <item.icon size={16} className={activeTab === item.id ? 'text-black' : 'text-white/30 group-hover:text-white/60'} />
+                  <span className="text-[10px] font-bold uppercase tracking-wider">{item.label}</span>
                 </div>
                 {item.badge && (
-                  <span className={`px-2 py-0.5 rounded-full text-[9px] font-black ${activeTab === item.id ? 'bg-black text-white' : 'bg-white/10 text-white'}`}>
+                  <span className={`px-2 py-0.5 rounded-full text-[8px] font-black ${
+                    activeTab === item.id 
+                      ? 'bg-black/20 text-black' 
+                      : 'bg-white/10 text-white/50'
+                  }`}>
                     {item.badge}
                   </span>
                 )}
@@ -271,26 +402,26 @@ export const Profile: React.FC<ProfileProps> = ({
             ))}
           </div>
           
-          <div className="h-[1px] bg-white/5 my-6 mx-6"></div>
+          <div className="h-px bg-white/10 my-4"></div>
           
           <div className="flex flex-col gap-1">
-            <button className="flex items-center gap-4 px-6 py-4 text-white/40 hover:text-white text-[11px] font-bold uppercase tracking-widest transition-colors">
-              <HelpCircle size={18} className="text-white/20" />
-              Technical Help
+            <button className="flex items-center gap-3 px-5 py-3 text-white/40 hover:text-white hover:bg-white/5 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all">
+              <HelpCircle size={16} className="text-white/30" />
+              Help Center
             </button>
             <button 
               onClick={() => { setUser(null); navigateTo('home'); }}
-              className="flex items-center gap-4 px-6 py-4 text-white/60 hover:text-white text-[11px] font-black uppercase tracking-widest transition-colors"
+              className="flex items-center gap-3 px-5 py-3 text-white/50 hover:text-white hover:bg-white/5 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all"
             >
-              <LogOut size={18} />
-              Sever Connection
+              <LogOut size={16} />
+              Sign Out
             </button>
           </div>
         </div>
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 min-h-[600px]">
+      <main className="flex-1 min-h-[600px] relative z-10">
         {renderContent()}
       </main>
     </div>
