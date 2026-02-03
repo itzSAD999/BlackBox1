@@ -322,7 +322,7 @@ export const Home: React.FC<HomeProps> = ({
                 <div className="w-16 h-[1px] bg-[#CDA032] group-hover:w-24 transition-all duration-500"></div> LAB SESSION
               </span>
               <h3 className="text-5xl md:text-8xl font-serif-luxury font-black italic tracking-tighter leading-[0.8] uppercase text-white group-hover:text-[#CDA032] transition-colors duration-500">
-                Technical Bench.
+                REPAIRS.
               </h3>
               <p className="text-lg text-white/40 font-light leading-relaxed max-w-xl italic group-hover:text-white/60 transition-colors">
                 KNUST facility diagnostic standard. Every circuit mapped with absolute precision.
