@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
-import { User } from '../types';
+import type { User } from "../interface/interface"
+import { users } from "../data/userInfo";
 import { Mail, Lock, User as UserIcon, ArrowRight, Shield, Eye, EyeOff } from 'lucide-react';
 
 interface AuthProps {
@@ -23,15 +24,59 @@ export const Auth: React.FC<AuthProps> = ({ setUser, navigateTo }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const mockUser: User = {
-      id: Math.random().toString(36).substr(2, 9),
-      name: formData.name || 'User',
-      email: formData.email,
-      role: 'user'
-    };
-    setUser(mockUser);
-    navigateTo('home');
+    
+    if (mode === "login") {
+      if (!formData.email || !formData.password){
+        alert("All Fields are Required!!")
+        return;
+      }
+
+      const foundUser = users.find(user => {
+        return (
+          user.email === formData.email &&
+          user.password === formData.password
+        );
+      });
+
+
+    if (!foundUser) {
+      alert("User not found");
+      return;
+    }
+
+      setUser(foundUser);
+      navigateTo('home');
+    }
+
+    else if (mode === "signup") {
+
+      const existingUser = users.find(
+        user => user.email === formData.email
+      );
+
+      if (existingUser) {
+        alert("Email already exists");
+        return;
+      }
+
+      const newUser: User = {
+        id: crypto.randomUUID(),
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        role: "user"
+      };
+
+      users.push(newUser);
+
+      alert("Account created successfully");
+      setUser(newUser);
+      navigateTo("home");
+      return;
+    }
   };
+
+  
 
   return (
     <div className="view-transition min-h-screen flex flex-col lg:flex-row bg-white overflow-hidden">
