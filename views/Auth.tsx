@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import type { User } from "../interface/interface"
-import { users } from "../data/userInfo";
+import { signIn, signUp, getUserProfile } from '../lib/api';
 import { Mail, Lock, User as UserIcon, ArrowRight, Shield, Eye, EyeOff } from 'lucide-react';
 
 interface AuthProps {
@@ -22,57 +22,70 @@ export const Auth: React.FC<AuthProps> = ({ setUser, navigateTo }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (mode === "login") {
-      if (!formData.email || !formData.password){
-        alert("All Fields are Required!!")
-        return;
-      }
-
-      const foundUser = users.find(user => {
-        return (
-          user.email === formData.email &&
-          user.password === formData.password
-        );
-      });
-
-
-    if (!foundUser) {
-      alert("User not found");
-      return;
-    }
-
-      setUser(foundUser);
-      navigateTo('home');
-    }
-
-    else if (mode === "signup") {
-
-      const existingUser = users.find(
-        user => user.email === formData.email
-      );
-
-      if (existingUser) {
-        alert("Email already exists");
-        return;
-      }
-
-      const newUser: User = {
-        id: crypto.randomUUID(),
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
-        role: "user"
+    // Check for admin credentials (no account creation)
+    if (formData.email === 'BlackBox@gmail.com' && formData.password === 'BlackBox') {
+      // Create admin user object for session only
+      const adminUser: User = {
+        id: 'admin-001',
+        name: 'Admin User',
+        email: 'BlackBox@gmail.com',
+        password: 'BlackBox',
+        role: 'admin'
       };
-
-      users.push(newUser);
-
-      alert("Account created successfully");
-      setUser(newUser);
-      navigateTo("home");
+      setUser(adminUser);
+      navigateTo('admin');
       return;
+    }
+    
+    try {
+      if (mode === "login") {
+        if (!formData.email || !formData.password){
+          alert("All Fields are Required!!");
+          return;
+        }
+
+        const { user } = await signIn(formData.email, formData.password);
+        
+        if (user) {
+          const profile = await getUserProfile(user.id);
+          const userObj: User = {
+            id: user.id,
+            name: profile?.name || user.email?.split('@')[0] || 'User',
+            email: user.email || '',
+            password: formData.password,
+            role: profile?.role || 'user'
+          };
+          setUser(userObj);
+          navigateTo('home');
+        }
+      }
+      else if (mode === "signup") {
+        if (!formData.name || !formData.email || !formData.password){
+          alert("All Fields are Required!!");
+          return;
+        }
+
+        const { user } = await signUp(formData.email, formData.password);
+        
+        if (user) {
+          const profile = await getUserProfile(user.id);
+          const userObj: User = {
+            id: user.id,
+            name: formData.name,
+            email: user.email || '',
+            password: formData.password,
+            role: profile?.role || 'user'
+          };
+          alert("Account created successfully");
+          setUser(userObj);
+          navigateTo("home");
+        }
+      }
+    } catch (error: any) {
+      alert(error.message || "Authentication failed");
     }
   };
 
@@ -89,7 +102,15 @@ export const Auth: React.FC<AuthProps> = ({ setUser, navigateTo }) => {
 
         <div className="relative z-10">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-[#CDA032] rounded flex items-center justify-center font-black text-black italic text-sm">B</div>
+            <div className="w-8 h-8 bg-[#000000] rounded flex items-center justify-center">
+              <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5">
+                <path d="M25 40V28C25 26.3431 26.3431 25 28 25H40" stroke="currentColor" strokeWidth="8" strokeLinecap="round"/>
+                <path d="M60 25H72C73.6569 25 75 26.3431 75 28V40" stroke="currentColor" strokeWidth="8" strokeLinecap="round"/>
+                <path d="M75 60V72C75 73.6569 73.6569 75 72 75H60" stroke="currentColor" strokeWidth="8" strokeLinecap="round"/>
+                <path d="M40 75H28C26.3431 75 25 73.6569 25 72V60" stroke="currentColor" strokeWidth="8" strokeLinecap="round"/>
+                <rect x="38" y="44" width="24" height="12" rx="6" fill="currentColor"/>
+              </svg>
+            </div>
             <span className="text-sm font-black tracking-widest text-white uppercase italic">BLACK BOX.</span>
           </div>
         </div>

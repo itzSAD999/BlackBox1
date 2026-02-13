@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, createContext, useContext } from 'react';
 import { 
   createRootRoute, 
@@ -12,6 +11,7 @@ import {
 } from '@tanstack/react-router';
 import { X, CheckCircle2, Activity, Scale, RefreshCcw } from 'lucide-react';
 import { Product, User, CartItem, Category, RepairRequest, Order } from './types';
+import { getProducts, createOrder } from './lib/api';
 import { INITIAL_PRODUCTS } from './constants';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
@@ -23,6 +23,8 @@ import { Auth } from './views/Auth';
 import { Profile } from './views/Profile';
 import { Cart } from './views/Cart';
 import { Trades } from './views/Trades';
+import { Admin } from './views/Admin';
+import { orders } from './data/orders';
 import { QuickViewModal } from './components/QuickViewModal';
 import { CompareModal } from './components/CompareModal';
 import { generateId } from './lib/utils';
@@ -162,6 +164,21 @@ const authRoute = createRoute({
   },
 });
 
+const adminRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/admin',
+  component: () => {
+    const context = useAppContext();
+    // Check if user is admin
+    if (context.user?.email === 'BlackBox@gmail.com' && context.user?.role === 'admin') {
+      return <Admin setUser={context.setUser} navigateTo={context.navigateTo} />;
+    }
+    // Redirect non-admin users to home
+    context.navigateTo('home');
+    return null;
+  },
+});
+
 const routeTree = rootRoute.addChildren([
   indexRoute,
   storeRoute,
@@ -171,6 +188,7 @@ const routeTree = rootRoute.addChildren([
   tradesRoute,
   profileRoute,
   authRoute,
+  adminRoute,
 ]);
 
 const memoryHistory = createMemoryHistory({
@@ -184,7 +202,7 @@ const router = createRouter({
 } as any);
 
 function RootComponent() {
-  const [products] = useState<Product[]>(INITIAL_PRODUCTS);
+  const [products, setProducts] = useState<Product[]>([]);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [wishlist, setWishlist] = useState<string[]>([]);
   const [compareIds, setCompareIds] = useState<string[]>([]);
@@ -219,6 +237,21 @@ function RootComponent() {
       if (localWishlist) setWishlist(JSON.parse(localWishlist));
       if (localCompare) setCompareIds(JSON.parse(localCompare));
     } catch (e) { console.error(e); }
+
+    // Fetch products from Supabase
+    const fetchProducts = async () => {
+      try {
+        const productsData = await getProducts();
+        // Use Supabase data if available, otherwise fallback to local data
+        setProducts(productsData.length > 0 ? productsData : INITIAL_PRODUCTS);
+      } catch (error) {
+        console.error('Failed to fetch products from Supabase, using local data:', error);
+        // Fallback to local products if Supabase fails
+        setProducts(INITIAL_PRODUCTS);
+      }
+    };
+
+    fetchProducts();
   }, []);
 
   useEffect(() => {
@@ -288,15 +321,31 @@ function RootComponent() {
     setCart(prev => prev.filter(p => `${p.id}-${JSON.stringify(p.selectedOptions)}` !== uniqueId));
   };
 
-  const handleCheckout = (total: number) => {
+  const handleCheckout = async (total: number) => {
     if (!user) { notify('Auth required.', 'error'); return; }
-    const newOrder: Order = {
-      id: generateId(), userId: user.id, userName: user.name, items: [...cart],
-      total, status: 'Pending', date: new Date().toISOString(), paymentMethod: 'Repository Credits'
-    };
-    setOrders([newOrder, ...orders]);
-    setCart([]);
-    notify('Transaction Authorized.');
+    
+    try {
+      // Create order in Supabase
+      const order = await createOrder(cart, user.id);
+      
+      // Create local order for UI compatibility
+      const newOrder: Order = {
+        id: order.id,
+        userId: user.id,
+        userName: user.name,
+        items: [...cart],
+        total,
+        status: 'Pending',
+        date: order.created_at,
+        paymentMethod: 'Credit Card'
+      };
+      
+      setOrders([newOrder, ...orders]);
+      setCart([]);
+      notify('Transaction Authorized.');
+    } catch (error: any) {
+      notify('Checkout failed: ' + error.message, 'error');
+    }
   };
 
   const contextValues: AppContextType = {

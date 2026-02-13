@@ -67,7 +67,7 @@ export const Store: React.FC<StoreProps> = ({
   const categoryOptions: { label: string, value: Category | 'All', icon: React.ReactNode, count?: number }[] = [
     { label: 'ALL PRODUCTS', value: 'All', icon: <LayoutGrid size={16} />, count: products.length },
     { label: 'IPHONE', value: 'iPhone', icon: <Smartphone size={16} />, count: products.filter(p => p.category === 'iPhone').length },
-    { label: 'TRADES', value: 'Trades', icon: <RefreshCcw size={16} /> },
+    // { label: 'TRADES', value: 'Trades', icon: <RefreshCcw size={16} /> },
     { label: 'LAPTOP', value: 'Laptop', icon: <LaptopIcon size={16} />, count: products.filter(p => p.category === 'Laptop').length },
     { label: 'ACCESSORIES', value: 'Accessories', icon: <Watch size={16} />, count: products.filter(p => p.category === 'Accessories').length },
     { label: 'GAMING', value: 'Gaming', icon: <Gamepad2 size={16} />, count: products.filter(p => p.category === 'Gaming').length },
