@@ -87,14 +87,11 @@ export const Trades: React.FC<TradesProps> = ({
                   </div>
                 </div>
                 <div className="space-y-3">
-                  <h1 className="text-5xl md:text-8xl font-black italic tracking-tighter uppercase leading-[0.85] text-white">
-                    HARDWARE <br/>
-                    <span className="bg-gradient-to-r from-[#B38B21] to-[#D4AF37] bg-clip-text text-transparent">TRADES.</span>
-                  </h1>
-                  <p className="text-[11px] font-black text-[#B38B21]/50 uppercase tracking-[0.6em] italic flex items-center gap-3">
-                    <Sparkles size={12} />
-                    UPGRADE YOUR BASELINE FROM REPOSITORY INVENTORY
-                  </p>
+                  <h6 className="text-5xl md:text-8xl font-black italic tracking-tighter uppercase leading-[0.85] text-white">
+                    Trade IN <br/>
+                    <span className="bg-gradient-to-r from-[#B38B21] to-[#D4AF37] bg-clip-text text-transparent"></span>
+                  </h6>
+
                 </div>
               </div>
 
@@ -149,11 +146,11 @@ export const Trades: React.FC<TradesProps> = ({
                   <div className="flex items-center justify-between">
                     <h3 className="text-3xl font-black italic uppercase tracking-tighter flex items-center gap-6">
                       <span className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#B38B21] to-[#D4AF37] flex items-center justify-center text-sm not-italic text-black font-black shadow-lg">01</span>
-                      Device Diagnostics
+                      Device Condition 
                     </h3>
                     <div className="hidden md:flex items-center gap-3 px-5 py-2 bg-[#B38B21]/10 rounded-full border border-[#B38B21]/20">
                       <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                      <span className="text-[9px] font-black uppercase tracking-widest text-[#B38B21]">Live Pricing</span>
+                      <span className="text-[9px] font-black uppercase tracking-widest text-[#B38B21]"></span>
                     </div>
                   </div>
 
@@ -450,7 +447,7 @@ export const Trades: React.FC<TradesProps> = ({
                     className="w-full py-7 bg-gradient-to-r from-[#B38B21] to-[#D4AF37] text-black rounded-full text-[12px] font-black uppercase tracking-[0.5em] flex items-center justify-center gap-4 hover:shadow-[0_20px_60px_rgba(179,139,33,0.5)] active:scale-[0.98] transition-all shadow-[0_15px_50px_rgba(179,139,33,0.3)] disabled:opacity-20 disabled:grayscale disabled:cursor-not-allowed group relative overflow-hidden"
                   >
                     <span className="relative z-10 flex items-center gap-4">
-                      AUTHORIZE EXCHANGE 
+                      TRADE 
                       <ArrowRight size={20} className="group-hover:translate-x-2 transition-transform" />
                     </span>
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
@@ -492,7 +489,7 @@ export const Trades: React.FC<TradesProps> = ({
                 to="/store" 
                 className="group text-[11px] font-black uppercase tracking-[0.4em] text-white/50 hover:text-[#B38B21] transition-all flex items-center gap-4 px-6 py-3 border-2 border-white/10 hover:border-[#B38B21]/30 rounded-full"
               >
-                 EXPLORE REPOSITORY 
+                 Search?
                  <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform" />
               </Link>
            </div>
