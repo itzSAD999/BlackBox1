@@ -8,6 +8,7 @@ import {
 import { User, RepairRequest, Order, Product } from '../types';
 import { formatDate, formatCurrency } from '../lib/utils';
 import { ProductCard } from '../components/ProductCard';
+import { OrderTracking } from '../components/OrderTracking';
 
 interface ProfileProps {
   user: User | null;
@@ -25,6 +26,7 @@ export const Profile: React.FC<ProfileProps> = ({
   user, repairs, orders, wishlist, products, setUser, navigateTo, toggleWishlist, onAddToCart 
 }) => {
   const [activeTab, setActiveTab] = useState<'overview' | 'settings' | 'orders' | 'repairs' | 'address' | 'payment' | 'wishlist' | 'preferences'>('overview');
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
   if (!user) return (
     <div className="min-h-screen bg-black flex items-center justify-center p-6">
@@ -184,8 +186,12 @@ export const Profile: React.FC<ProfileProps> = ({
                          <td className="px-4 py-5 text-white/40">{order.items.length}</td>
                          <td className="px-4 py-5 text-white font-black">{formatCurrency(order.total)}</td>
                          <td className="px-8 py-5 text-right">
-                           <button className="text-white/30 hover:text-white transition-colors p-2 hover:bg-white/5 rounded-lg">
-                             <Eye size={16}/>
+                           <button 
+                             onClick={() => setSelectedOrder(order)}
+                             className="text-white/30 hover:text-[#B38B21] transition-colors p-2 hover:bg-white/5 rounded-lg"
+                             title="Track Order"
+                           >
+                             <Truck size={16}/>
                            </button>
                          </td>
                        </tr>
@@ -209,6 +215,40 @@ export const Profile: React.FC<ProfileProps> = ({
              )}
           </div>
         );
+
+      // Order Tracking Modal
+      if (selectedOrder) {
+        return (
+          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-6">
+            <div className="bg-gradient-to-br from-[#0a0a0a] to-[#050505] border border-white/10 rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="sticky top-0 bg-gradient-to-br from-[#0a0a0a] to-[#050505] border-b border-white/10 p-6 flex items-center justify-between z-10">
+                <div>
+                  <h3 className="text-xl font-black italic uppercase tracking-tight flex items-center gap-3">
+                    <Truck size={20} className="text-[#B38B21]" />
+                    Order Tracking
+                  </h3>
+                  <p className="text-[9px] font-bold text-white/30 uppercase tracking-wider">Order #{selectedOrder.id}</p>
+                </div>
+                <button
+                  onClick={() => setSelectedOrder(null)}
+                  className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                >
+                  <XCircle size={20} className="text-white/60" />
+                </button>
+              </div>
+              
+              <div className="p-6">
+                <OrderTracking 
+                  order={selectedOrder} 
+                  onStatusUpdate={() => {
+                    // Refresh orders data if needed
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        );
+      }
 
       case 'repairs':
         return (

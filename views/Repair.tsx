@@ -8,6 +8,7 @@ import { useNavigate } from '@tanstack/react-router';
 import { RepairRequest } from '../types';
 import { generateId, formatCurrency } from '../lib/utils';
 import { useAppContext } from '../App';
+import { ImageUpload } from '../components/ImageUpload';
 
 export const Repair: React.FC = () => {
   const { user, repairs, setRepairs, notify } = useAppContext();
@@ -45,7 +46,8 @@ export const Repair: React.FC = () => {
        device: `${formData.brand} ${formData.model}`, 
        issue: formData.description,
        status: 'Received', 
-       date: new Date().toISOString()
+       date: new Date().toISOString(),
+       imageUrl: formData.photos.length > 0 ? formData.photos[0] : undefined
     };
     setRepairs([newRepair, ...repairs]);
     notify('Repair request submitted successfully!');
@@ -307,11 +309,12 @@ export const Repair: React.FC = () => {
                   <ImageIcon size={12} />
                   Add Photos (Optional)
                 </label>
-                <div className="border-2 border-dashed border-white/10 rounded-2xl p-8 text-center hover:border-[#B38B21]/30 transition-all cursor-pointer">
-                  <Upload size={32} className="mx-auto mb-3 text-white/20" />
-                  <p className="text-[10px] font-bold text-white/40 uppercase tracking-wider mb-1">Upload device photos</p>
-                  <p className="text-[8px] text-white/20">PNG, JPG up to 5MB</p>
-                </div>
+                <ImageUpload
+                  images={formData.photos}
+                  onImagesChange={(photos) => setFormData({ ...formData, photos })}
+                  maxImages={5}
+                  maxSize={5}
+                />
               </div>
 
               <div className="space-y-4 pt-6 border-t border-white/5">

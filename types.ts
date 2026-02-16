@@ -47,6 +47,13 @@ export interface Order {
   status: 'Pending' | 'Processing' | 'Shipped' | 'Delivered' | 'Cancelled';
   date: string;
   paymentMethod: string;
+  tracking_number?: string;
+  estimated_delivery?: string;
+  actual_delivery?: string;
+  shipping_address?: string;
+  payment_status?: 'pending' | 'paid' | 'failed' | 'refunded';
+  shipping_method?: string;
+  shipping_cost?: number;
 }
 
 export interface RepairRequest {

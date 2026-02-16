@@ -22,6 +22,7 @@ import { Store } from './views/Store';
 import { Auth } from './views/Auth';
 import { Profile } from './views/Profile';
 import { Cart } from './views/Cart';
+import { Checkout } from './views/Checkout';
 import { Trades } from './views/Trades';
 import { Admin } from './views/Admin';
 import { orders } from './data/orders';
@@ -128,6 +129,14 @@ const cartRoute = createRoute({
   },
 });
 
+const checkoutRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/checkout',
+  component: () => {
+    return <Checkout />;
+  },
+});
+
 const repairRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/repair',
@@ -184,6 +193,7 @@ const routeTree = rootRoute.addChildren([
   storeRoute,
   productDetailRoute,
   cartRoute,
+  checkoutRoute,
   repairRoute,
   tradesRoute,
   profileRoute,

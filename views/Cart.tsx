@@ -280,7 +280,7 @@ export const Cart: React.FC<CartProps> = ({
               </div>
 
               <button
-                onClick={() => handleCheckout(total)}
+                onClick={() => navigateTo("checkout")}
                 disabled={cart.length === 0}
                 className="w-full py-5 bg-gradient-to-r from-[#CDA032] to-[#F1E08A] text-black rounded-full font-black uppercase"
               >
