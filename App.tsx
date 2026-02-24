@@ -28,6 +28,7 @@ import { Admin } from './views/Admin';
 import { orders } from './data/orders';
 import { QuickViewModal } from './components/QuickViewModal';
 import { CompareModal } from './components/CompareModal';
+import { WelcomeScreen } from './components/WelcomeScreen';
 import { generateId } from './lib/utils';
 
 const STORAGE_KEYS = {
@@ -228,6 +229,7 @@ function RootComponent() {
 
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
   const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
+  const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
 
   const navigate = useNavigate();
 
@@ -370,7 +372,12 @@ function RootComponent() {
 
   return (
     <AppContext.Provider value={contextValues}>
-      <div className="flex flex-col min-h-screen bg-black text-white selection:bg-[#B38B21] selection:text-black">
+      {/* Welcome Screen */}
+      {showWelcomeScreen && (
+        <WelcomeScreen onComplete={() => setShowWelcomeScreen(false)} />
+      )}
+      
+      <div className={`flex flex-col min-h-screen bg-black text-white selection:bg-[#B38B21] selection:text-black ${showWelcomeScreen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
         <Navbar 
           user={user} 
           cart={cart} 
