@@ -106,7 +106,7 @@ export const Repair: React.FC = () => {
   const inputBg = { backgroundColor: '#0d0d0b' };
 
   return (
-    <div className="min-h-screen text-white py-10 px-5 relative" style={{ backgroundColor: '#060605' }}>
+    <div className="min-h-screen text-white py-8 sm:py-10 px-4 sm:px-6 relative" style={{ backgroundColor: '#060605' }}>
       {/* Subtle bg glow */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-0 w-[400px] h-[400px] rounded-full opacity-10" style={{ background: 'radial-gradient(circle, #B38B21 0%, transparent 70%)', filter: 'blur(100px)', transform: 'translate(-40%, -40%)' }} />

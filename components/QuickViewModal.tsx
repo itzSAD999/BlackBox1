@@ -29,28 +29,28 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, isOpen,
         onClick={onClose} 
       />
       
-      <div className="relative w-full max-w-5xl bg-[#0a0a0a] border border-white/10 rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col md:flex-row animate-in zoom-in-95 duration-500 max-h-[90vh]">
+      <div className="relative w-full max-w-5xl bg-[#0a0a0a] border border-white/10 rounded-3xl sm:rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col md:flex-row animate-in zoom-in-95 duration-500 max-h-[90vh]">
         <button 
           onClick={onClose}
-          className="absolute top-6 right-6 z-20 p-3 bg-white/5 hover:bg-white hover:text-black rounded-full transition-all border border-white/5"
+          className="absolute top-4 right-4 sm:top-6 sm:right-6 z-20 p-3 bg-white/5 hover:bg-white hover:text-black rounded-full transition-all border border-white/5"
         >
           <X size={20} />
         </button>
 
         {/* Image Column */}
-        <div className="w-full md:w-1/2 bg-black flex items-center justify-center p-12">
+        <div className="w-full md:w-1/2 bg-black flex items-center justify-center p-6 sm:p-10 md:p-12">
           <img 
             src={product.image} 
             alt={product.name} 
-            className="w-full h-full object-contain max-h-[400px]"
+            className="w-full h-full object-contain max-h-[260px] sm:max-h-[340px] md:max-h-[400px]"
           />
         </div>
 
         {/* Info Column */}
-        <div className="w-full md:w-1/2 p-8 md:p-12 overflow-y-auto no-scrollbar space-y-8">
+        <div className="w-full md:w-1/2 p-5 sm:p-8 md:p-12 overflow-y-auto no-scrollbar space-y-6 sm:space-y-8">
           <div className="space-y-4">
             <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30 italic">{product.category}</p>
-            <h2 className="text-3xl md:text-4xl font-black tracking-tighter uppercase italic leading-tight">{product.name}</h2>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tighter uppercase italic leading-tight">{product.name}</h2>
             <div className="flex items-center gap-4">
               <span className="text-2xl font-black text-white">{formatCurrency(product.price)}</span>
               <div className="flex items-center gap-1">
@@ -64,7 +64,7 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, isOpen,
             {product.description}
           </p>
 
-          <div className="space-y-8">
+          <div className="space-y-6 sm:space-y-8">
             {product.variants && product.variants.map(variant => (
               <div key={variant.name} className="space-y-4">
                 <label className="text-[10px] font-black uppercase tracking-widest text-white/30">{variant.name}</label>
@@ -73,7 +73,7 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, isOpen,
                     <button 
                       key={option}
                       onClick={() => setSelectedOptions(prev => ({ ...prev, [variant.name]: option }))}
-                      className={`px-5 py-2.5 rounded-xl border text-[10px] font-black transition-all ${selectedOptions[variant.name] === option ? 'border-white bg-white text-black' : 'border-white/10 hover:border-white/30'}`}
+                      className={`px-4 sm:px-5 py-2.5 rounded-xl border text-[10px] font-black transition-all ${selectedOptions[variant.name] === option ? 'border-white bg-white text-black' : 'border-white/10 hover:border-white/30'}`}
                     >
                       {option}
                     </button>
@@ -91,7 +91,7 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({ product, isOpen,
               
               <button 
                 onClick={handleAddToCart}
-                className="flex-1 w-full py-5 bg-white text-black font-black text-[10px] rounded-2xl shadow-xl hover:bg-white/90 active:scale-[0.98] transition-all uppercase tracking-[0.3em] flex items-center justify-center gap-3"
+                className="flex-1 w-full py-4 sm:py-5 bg-white text-black font-black text-[10px] rounded-2xl shadow-xl hover:bg-white/90 active:scale-[0.98] transition-all uppercase tracking-[0.3em] flex items-center justify-center gap-3"
               >
                 <ShoppingCart size={16} /> Add to Bag
               </button>

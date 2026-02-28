@@ -7,6 +7,7 @@ import {
   Outlet,
   useNavigate,
   useParams,
+  useLocation,
   createMemoryHistory
 } from '@tanstack/react-router';
 import { X, CheckCircle2, Activity, Scale, RefreshCcw } from 'lucide-react';
@@ -38,10 +39,13 @@ const STORAGE_KEYS = {
   ORDERS: 'bb_v4_orders',
   REPAIRS: 'bb_v4_repairs',
   WISHLIST: 'bb_v4_wishlist',
-  COMPARE: 'bb_v4_compare'
+  COMPARE: 'bb_v4_compare',
+  THEME: 'bb_v4_theme',
 };
 
 // --- APP CONTEXT ---
+export type Theme = 'light' | 'dark';
+
 export interface AppContextType {
   products: Product[];
   cart: CartItem[];
@@ -67,6 +71,8 @@ export interface AppContextType {
   navigateTo: (v: string, id?: string) => void;
   onQuickView: (p: Product) => void;
   onAddToCart: (p: Product) => void;
+  theme: Theme;
+  setTheme: (t: Theme) => void;
 }
 
 export const AppContext = createContext<AppContextType | null>(null);
@@ -230,8 +236,10 @@ function RootComponent() {
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
   const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
+  const [theme, setTheme] = useState<Theme>('dark');
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     try {
@@ -241,6 +249,7 @@ function RootComponent() {
       const localRepairs = localStorage.getItem(STORAGE_KEYS.REPAIRS);
       const localWishlist = localStorage.getItem(STORAGE_KEYS.WISHLIST);
       const localCompare = localStorage.getItem(STORAGE_KEYS.COMPARE);
+      const localTheme = localStorage.getItem(STORAGE_KEYS.THEME);
 
       if (localUser) setUser(JSON.parse(localUser));
       if (localCart) setCart(JSON.parse(localCart));
@@ -248,6 +257,7 @@ function RootComponent() {
       if (localRepairs) setRepairs(JSON.parse(localRepairs));
       if (localWishlist) setWishlist(JSON.parse(localWishlist));
       if (localCompare) setCompareIds(JSON.parse(localCompare));
+      if (localTheme === 'light' || localTheme === 'dark') setTheme(localTheme);
     } catch (e) { console.error(e); }
 
     // Fetch products from Supabase
@@ -274,7 +284,13 @@ function RootComponent() {
     localStorage.setItem(STORAGE_KEYS.REPAIRS, JSON.stringify(repairs));
     localStorage.setItem(STORAGE_KEYS.WISHLIST, JSON.stringify(wishlist));
     localStorage.setItem(STORAGE_KEYS.COMPARE, JSON.stringify(compareIds));
-  }, [user, cart, orders, repairs, wishlist, compareIds]);
+    localStorage.setItem(STORAGE_KEYS.THEME, theme);
+  }, [user, cart, orders, repairs, wishlist, compareIds, theme]);
+
+  // Apply theme globally (CSS reads html[data-theme]).
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+  }, [theme]);
 
   const notify = (msg: string, type: 'success' | 'error' = 'success') => {
     setNotification({ msg, type });
@@ -368,7 +384,11 @@ function RootComponent() {
     updateQuantity, removeFromCart, handleCheckout, notify, navigateTo,
     onQuickView: (p: Product) => { setQuickViewProduct(p); setIsQuickViewOpen(true); },
     onAddToCart: (p: Product) => addToCart(p),
+    theme,
+    setTheme,
   };
+
+  const isLight = theme === 'light';
 
   return (
     <AppContext.Provider value={contextValues}>
@@ -377,13 +397,14 @@ function RootComponent() {
         <WelcomeScreen onComplete={() => setShowWelcomeScreen(false)} />
       )}
       
-      <div className={`flex flex-col min-h-screen bg-black text-white selection:bg-[#B38B21] selection:text-black ${showWelcomeScreen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+      <div className={`flex flex-col min-h-screen selection:bg-[#B38B21] selection:text-black ${showWelcomeScreen ? 'opacity-0 pointer-events-none' : 'opacity-100'} ${isLight ? 'bg-[#F0F0F0] text-black' : 'bg-black text-white'}`}>
         <Navbar 
           user={user} 
           cart={cart} 
           searchQuery={searchQuery} 
           setSearchQuery={setSearchQuery} 
           setIsMobileMenuOpen={setIsMobileMenuOpen}
+          theme={theme}
         />
 
         <main className="flex-1">
@@ -422,11 +443,11 @@ function RootComponent() {
         )}
 
         {isMobileMenuOpen && (
-          <div className="fixed inset-0 z-[100] bg-black/98 backdrop-blur-3xl flex flex-col items-center justify-center p-8 text-center animate-in fade-in duration-500">
+          <div className="fixed inset-0 z-[100] bg-black/98 backdrop-blur-3xl flex flex-col items-center justify-center p-6 sm:p-8 text-center animate-in fade-in duration-500 overflow-auto">
             <button onClick={() => setIsMobileMenuOpen(false)} className="absolute top-8 right-8 p-4 bg-white/5 rounded-full">
               <X size={32}/>
             </button>
-            <div className="flex flex-col gap-10 text-4xl font-black italic uppercase tracking-widest">
+            <div className="flex flex-col gap-6 sm:gap-8 text-2xl sm:text-3xl font-black italic uppercase tracking-widest w-full max-w-md">
               {['home', 'store', 'cart', 'repair', 'trades', 'profile'].map((v) => (
                 <button key={v} onClick={() => navigateTo(v === 'profile' ? 'profile' : v)} className="hover:text-[#B38B21] transition-colors">
                   {v}
@@ -436,7 +457,7 @@ function RootComponent() {
           </div>
         )}
 
-        <Footer />
+        <Footer theme={theme} />
       </div>
     </AppContext.Provider>
   );

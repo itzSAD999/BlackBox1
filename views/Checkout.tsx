@@ -136,7 +136,7 @@ export const Checkout: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white py-12 px-6">
+    <div className="min-h-screen bg-black text-white py-10 sm:py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex items-center gap-4 mb-8">
@@ -147,7 +147,7 @@ export const Checkout: React.FC = () => {
             <ArrowLeft className="w-5 h-5" />
           </button>
           <div>
-            <h1 className="text-3xl font-bold">Checkout</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold">Checkout</h1>
             <p className="text-white/60">Complete your order</p>
           </div>
         </div>
