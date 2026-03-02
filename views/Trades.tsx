@@ -60,7 +60,7 @@ export const Trades: React.FC<TradesProps> = ({
   const savingsPct = targetPhone ? Math.round((tradeInValue / targetPhone.price) * 100) : 0;
 
   return (
-    <div className="min-h-screen no-print relative" style={{ backgroundColor: '#060605', color: '#fff' }}>
+    <div className="min-h-screen no-print relative" style={{ backgroundColor: 'var(--bb-bg)', color: 'var(--bb-text)' }}>
 
       {/* Subtle bg glow */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -105,7 +105,7 @@ export const Trades: React.FC<TradesProps> = ({
           <div className="xl:col-span-8 space-y-8">
 
             {/* Step 1 */}
-            <section className="rounded-2xl p-6 md:p-8 space-y-6" style={{ backgroundColor: '#0d0d0b' }}>
+            <section className="rounded-2xl p-6 md:p-8 space-y-6" style={{ backgroundColor: 'var(--bb-surface)' }}>
               <div className="flex items-center gap-3">
                 <span className="w-6 h-6 rounded-lg text-[10px] font-black text-black flex items-center justify-center" style={{ backgroundColor: '#B38B21' }}>01</span>
                 <h2 className="text-sm font-black uppercase tracking-widest text-white/80">Your Device</h2>
@@ -122,7 +122,7 @@ export const Trades: React.FC<TradesProps> = ({
                       value={currentPhone}
                       onChange={e => setCurrentPhone(e.target.value)}
                       className="w-full border border-white/8 rounded-xl px-4 py-3 text-sm font-semibold text-white outline-none appearance-none cursor-pointer transition-all focus:border-white/20"
-                      style={{ backgroundColor: '#060605' }}
+                      style={{ backgroundColor: 'var(--bb-bg)' }}
                     >
                       <option value="">Select model</option>
                       {Object.keys(valuations).map(v => <option key={v} value={v}>{v}</option>)}
@@ -195,7 +195,7 @@ export const Trades: React.FC<TradesProps> = ({
                     value={targetSearch}
                     onChange={e => setTargetSearch(e.target.value)}
                     className="w-full border border-white/8 rounded-xl pl-9 pr-4 py-2.5 text-xs font-medium text-white outline-none transition-all focus:border-white/20"
-                    style={{ backgroundColor: '#0d0d0b' }}
+                    style={{ backgroundColor: 'var(--bb-surface)' }}
                   />
                 </div>
               </div>
@@ -217,7 +217,7 @@ export const Trades: React.FC<TradesProps> = ({
                         <Check size={10} className="text-black" strokeWidth={3} />
                       </div>
                     )}
-                    <div className="w-20 h-20 rounded-xl flex items-center justify-center overflow-hidden" style={{ backgroundColor: '#060605' }}>
+                    <div className="w-20 h-20 rounded-xl flex items-center justify-center overflow-hidden" style={{ backgroundColor: 'var(--bb-bg)' }}>
                       <img src={p.image} alt={p.name} className="w-16 h-16 object-contain transition-transform duration-300 group-hover:scale-105" />
                     </div>
                     <div className="space-y-1">
@@ -236,7 +236,7 @@ export const Trades: React.FC<TradesProps> = ({
                     )}
                   </div>
                 )) : (
-                  <div className="col-span-full py-16 rounded-2xl border border-dashed border-white/8 flex flex-col items-center justify-center gap-3" style={{ backgroundColor: '#0d0d0b' }}>
+                  <div className="col-span-full py-16 rounded-2xl border border-dashed border-white/8 flex flex-col items-center justify-center gap-3" style={{ backgroundColor: 'var(--bb-surface)' }}>
                     <Info size={32} className="text-white/10" />
                     <p className="text-xs font-semibold text-white/20">No devices match your search</p>
                     <button onClick={() => setTargetSearch('')} className="text-[10px] text-white/30 hover:text-white transition-colors underline">Clear search</button>
@@ -248,14 +248,14 @@ export const Trades: React.FC<TradesProps> = ({
 
           {/* ── Sidebar ── */}
           <aside className="xl:col-span-4 sticky top-24 space-y-4">
-            <div className="rounded-2xl p-6 space-y-6" style={{ backgroundColor: '#0d0d0b' }}>
+            <div className="rounded-2xl p-6 space-y-6" style={{ backgroundColor: 'var(--bb-surface)' }}>
               <h3 className="text-xs font-black uppercase tracking-widest text-white/50 flex items-center gap-2">
                 <Scale size={13} style={{ color: '#B38B21' }} /> Trade Summary
               </h3>
 
               {/* Visual comparison */}
               <div className="grid grid-cols-2 gap-3">
-                <div className="rounded-xl p-3 space-y-2 text-center" style={{ backgroundColor: '#060605' }}>
+                <div className="rounded-xl p-3 space-y-2 text-center" style={{ backgroundColor: 'var(--bb-bg)' }}>
                   <p className="text-[9px] font-bold text-white/25 uppercase tracking-widest">Your Device</p>
                   <div className="h-14 flex items-center justify-center">
                     {currentPhone
@@ -266,7 +266,7 @@ export const Trades: React.FC<TradesProps> = ({
                   <p className="text-sm font-black" style={{ color: '#B38B21' }}>{formatCurrency(tradeInValue)}</p>
                 </div>
 
-                <div className="rounded-xl p-3 space-y-2 text-center" style={{ backgroundColor: '#060605' }}>
+                <div className="rounded-xl p-3 space-y-2 text-center" style={{ backgroundColor: 'var(--bb-bg)' }}>
                   <p className="text-[9px] font-bold text-white/25 uppercase tracking-widest">New Device</p>
                   <div className="h-14 flex items-center justify-center overflow-hidden">
                     {targetPhone

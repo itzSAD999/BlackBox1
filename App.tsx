@@ -405,6 +405,7 @@ function RootComponent() {
           setSearchQuery={setSearchQuery} 
           setIsMobileMenuOpen={setIsMobileMenuOpen}
           theme={theme}
+          setTheme={setTheme}
         />
 
         <main className="flex-1">

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import type { User } from "../interface/interface"
+import { users } from "../data/userInfo";
 import { signIn, signUp, getUserProfile } from '../lib/api';
 import { Mail, Lock, User as UserIcon, Eye, EyeOff, Sun, Moon } from 'lucide-react';
 import { useAppContext } from '../App';
@@ -38,7 +39,7 @@ export const Auth: React.FC<AuthProps> = ({ setUser, navigateTo }) => {
         role: 'admin'
       };
       setUser(adminUser);
-      navigateTo('admin');
+      navigateTo('/admin');
       return;
     }
     
@@ -46,6 +47,17 @@ export const Auth: React.FC<AuthProps> = ({ setUser, navigateTo }) => {
       if (mode === "login") {
         if (!formData.email || !formData.password){
           alert("All Fields are Required!!");
+          return;
+        }
+
+        // Check against local static users list first
+        const localUser = users.find(
+          (u) => u.email === formData.email && u.password === formData.password
+        );
+
+        if (localUser) {
+          setUser(localUser);
+          navigateTo("home");
           return;
         }
 
@@ -99,6 +111,7 @@ export const Auth: React.FC<AuthProps> = ({ setUser, navigateTo }) => {
   const cardBorder = isDark ? 'border-white/10' : 'border-black/10';
   const cardText = isDark ? 'text-white' : 'text-black';
   const cardMuted = isDark ? 'text-white/50' : 'text-black/50';
+  const frameBorder = isDark ? 'border-white' : 'border-black';
   const inputBg = isDark ? 'bg-white/5 focus:bg-white/10' : 'bg-[#F5F5F5] focus:bg-white';
   const inputPh = isDark ? 'placeholder:text-white/25' : 'placeholder:text-black/25';
   const leftText = isDark ? 'text-white' : 'text-black';
@@ -108,18 +121,15 @@ export const Auth: React.FC<AuthProps> = ({ setUser, navigateTo }) => {
 
   return (
     <div className={`view-transition flex-1 min-h-0 flex items-center justify-center p-4 lg:p-6 overflow-auto ${isDark ? 'bg-black' : 'bg-[#F0F0F0]'}`}>
-      {/* Theme toggle - fixed top right */}
-      <button
-        type="button"
-        onClick={() => setTheme(isDark ? 'light' : 'dark')}
-        className={`fixed top-20 right-4 z-20 p-2.5 rounded-xl transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#CDA032] focus-visible:ring-offset-2 ${isDark ? 'bg-white/10 hover:bg-white/20 text-white' : 'bg-black/10 hover:bg-black/20 text-black'}`}
-        aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-      >
-        {isDark ? <Sun size={20} /> : <Moon size={20} />}
-      </button>
-
       {/* Single card: gridline-based layout — all divisions end at same top/bottom/center */}
-      <div className={`w-full max-w-[900px] glow-border shadow-2xl overflow-hidden ${isDark ? 'bg-[#0a0a0a]' : 'bg-white'}`}>
+      <div className={`relative w-full max-w-[900px] overflow-hidden px-10 py-10 ${isDark ? 'bg-[#0a0a0a]' : 'bg-transparent'}`}>
+        {/* Corner frame border */}
+        <div className="pointer-events-none absolute inset-0">
+          <div className={`absolute top-4 left-4 w-16 h-16 border-t-2 border-l-2 rounded-tl-2xl ${frameBorder}`} />
+          <div className={`absolute top-4 right-4 w-16 h-16 border-t-2 border-r-2 rounded-tr-2xl ${frameBorder}`} />
+          <div className={`absolute bottom-4 left-4 w-16 h-16 border-b-2 border-l-2 rounded-bl-2xl ${frameBorder}`} />
+          <div className={`absolute bottom-4 right-4 w-16 h-16 border-b-2 border-r-2 rounded-br-2xl ${frameBorder}`} />
+        </div>
         <div className="flex flex-col lg:flex-row min-h-0">
           {/* LEFT: Brand — grid-aligned padding; content ends at same vertical as form */}
           <div className={`lg:w-[45%] ${leftBg} flex flex-col justify-between`} style={{ padding: '24px' }}>
@@ -164,7 +174,7 @@ export const Auth: React.FC<AuthProps> = ({ setUser, navigateTo }) => {
                 {mode === 'login' ? 'Login to your account' : 'Create an account'}
               </h2>
               <p className={`text-[10px] font-black uppercase tracking-widest ${cardMuted} mt-0.5 italic`}>
-                {mode === 'login' ? 'Welcome back to the repository' : 'Establish your new tech identity'}
+                {mode === 'login' ? 'Welcome back to Blackbox' : 'Establish your new tech identity'}
               </p>
             </div>
 
@@ -232,7 +242,7 @@ export const Auth: React.FC<AuthProps> = ({ setUser, navigateTo }) => {
               </div>
               <button
                 type="submit"
-              className="w-full glow-border py-3 bg-[#CDA032] text-black font-black rounded-xl text-xs uppercase tracking-[0.15em] shadow-lg hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 mt-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#CDA032] focus-visible:ring-offset-2"
+              className="w-full  py-3 bg-[#CDA032] text-black font-black rounded-xl text-xs uppercase tracking-[0.15em] shadow-lg hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 mt-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#CDA032] focus-visible:ring-offset-2"
               >
                 {mode === 'login' ? 'Login now' : 'Create account'}
               </button>

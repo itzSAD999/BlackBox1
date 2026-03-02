@@ -3,6 +3,7 @@ import { Search, SlidersHorizontal, Check, Smartphone, Laptop as LaptopIcon, Wat
 import { Product, Category } from '../types';
 import { ProductCard } from '../components/ProductCard';
 import { formatCurrency } from '../lib/utils';
+import type { Theme } from '../App';
 
 interface StoreProps {
   products: Product[];
@@ -16,6 +17,7 @@ interface StoreProps {
   compareIds: string[];
   onToggleCompare: (productId: string) => void;
   onAddToCart: (p: Product) => void;
+  theme?: Theme;
 }
 
 export const Store: React.FC<StoreProps> = ({
@@ -29,7 +31,8 @@ export const Store: React.FC<StoreProps> = ({
   toggleWishlist,
   compareIds,
   onToggleCompare,
-  onAddToCart
+  onAddToCart,
+  theme,
 }) => {
   const [minPrice, setMinPrice] = useState<number>(0);
   const [maxPrice, setMaxPrice] = useState<number>(15000);
@@ -37,6 +40,7 @@ export const Store: React.FC<StoreProps> = ({
   const [sortBy, setSortBy] = useState('Most Popular');
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const isLight = theme === 'light';
 
   const filteredProducts = useMemo(() => {
     const q = searchQuery.toLowerCase().trim();
@@ -73,32 +77,44 @@ export const Store: React.FC<StoreProps> = ({
     setInStockOnly(false);
   };
 
-  const inputBg = { backgroundColor: '#0d0d0b' };
+  const pageBg = isLight ? '#F0F0F0' : '#060605';
+  const panelBg = isLight ? '#FFFFFF' : '#0d0d0b';
+  const inputBg = { backgroundColor: isLight ? '#FFFFFF' : '#0d0d0b' };
+  const borderSubtle = isLight ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.08)';
+  const borderFaint = isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.06)';
+  const textMuted = isLight ? 'rgba(0,0,0,0.45)' : 'rgba(255,255,255,0.3)';
+  const textMuted2 = isLight ? 'rgba(0,0,0,0.25)' : 'rgba(255,255,255,0.25)';
 
   return (
-    <div className="min-h-screen text-white" style={{ backgroundColor: '#060605' }}>
+    <div className="min-h-screen" style={{ backgroundColor: pageBg, color: isLight ? '#000' : '#fff' }}>
 
       {/* Top Bar */}
-      <div style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+      <div style={{ borderBottom: `1px solid ${borderFaint}` }}>
         <div className="max-w-7xl mx-auto px-5 py-3 flex items-center justify-between">
-          <span className="text-xs text-white/30">
+          <span className="text-xs" style={{ color: textMuted }}>
             {filteredProducts.length} {filteredProducts.length === 1 ? 'Product' : 'Products'} Found
           </span>
 
           <div className="flex items-center gap-3">
             {/* View toggle */}
-            <div className="flex items-center rounded-lg overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
+            <div className="flex items-center rounded-lg overflow-hidden" style={{ border: `1px solid ${borderSubtle}` }}>
               <button
                 onClick={() => setViewMode('grid')}
                 className="px-2.5 py-2 transition-colors"
-                style={{ backgroundColor: viewMode === 'grid' ? 'rgba(255,255,255,0.08)' : 'transparent', color: viewMode === 'grid' ? '#fff' : 'rgba(255,255,255,0.3)' }}
+                style={{
+                  backgroundColor: viewMode === 'grid' ? (isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.08)') : 'transparent',
+                  color: viewMode === 'grid' ? (isLight ? '#000' : '#fff') : textMuted,
+                }}
               >
                 <Grid3x3 size={14} />
               </button>
               <button
                 onClick={() => setViewMode('list')}
                 className="px-2.5 py-2 transition-colors"
-                style={{ backgroundColor: viewMode === 'list' ? 'rgba(255,255,255,0.08)' : 'transparent', color: viewMode === 'list' ? '#fff' : 'rgba(255,255,255,0.3)' }}
+                style={{
+                  backgroundColor: viewMode === 'list' ? (isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.08)') : 'transparent',
+                  color: viewMode === 'list' ? (isLight ? '#000' : '#fff') : textMuted,
+                }}
               >
                 <List size={14} />
               </button>
@@ -109,15 +125,15 @@ export const Store: React.FC<StoreProps> = ({
               <select
                 value={sortBy}
                 onChange={e => setSortBy(e.target.value)}
-                className="appearance-none border rounded-lg pl-3 pr-7 py-2 text-xs text-white/60 focus:outline-none transition-colors"
-                style={{ ...inputBg, borderColor: 'rgba(255,255,255,0.08)' }}
+                className="appearance-none border rounded-lg pl-3 pr-7 py-2 text-xs focus:outline-none transition-colors"
+                style={{ ...inputBg, borderColor: borderSubtle, color: textMuted, backgroundColor: panelBg }}
               >
                 <option value="Most Popular">Most Popular</option>
                 <option value="Price: Low to High">Price: Low to High</option>
                 <option value="Price: High to Low">Price: High to Low</option>
                 <option value="Newest Arrivals">Newest Arrivals</option>
               </select>
-              <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-white/25" size={12} />
+              <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" style={{ color: textMuted2 }} size={12} />
             </div>
           </div>
         </div>

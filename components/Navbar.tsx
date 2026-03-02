@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, Menu, User as UserIcon, Wrench, X, ShoppingCart, Home, ShoppingBag, RefreshCcw } from 'lucide-react';
+import { Menu, User as UserIcon, Wrench, ShoppingCart, Home, ShoppingBag, RefreshCcw, Sun, Moon } from 'lucide-react';
 import { Link, useLocation } from '@tanstack/react-router';
 import { User, CartItem } from '../types';
 
@@ -13,6 +13,7 @@ interface NavbarProps {
   setIsMobileMenuOpen: (open: boolean) => void;
   /** Global app theme */
   theme?: Theme;
+  setTheme?: (t: Theme) => void;
 }
 
 const ViewfinderLogo = () => (
@@ -26,7 +27,13 @@ const ViewfinderLogo = () => (
 );
 
 export const Navbar: React.FC<NavbarProps> = ({
-  user, cart, searchQuery, setSearchQuery, setIsMobileMenuOpen, theme
+  user,
+  cart,
+  searchQuery,
+  setSearchQuery,
+  setIsMobileMenuOpen,
+  theme,
+  setTheme,
 }) => {
   const location = useLocation();
   const cartCount = cart.reduce((a, c) => a + c.quantity, 0);
@@ -87,17 +94,21 @@ export const Navbar: React.FC<NavbarProps> = ({
           </Link>
         </div>
 
-        <div className="flex items-center gap-4">
-          <div className="relative hidden md:block">
-            <Search size={16} className={`absolute left-5 top-1/2 -translate-y-1/2 ${isLight ? 'text-black/30' : 'text-white/20'}`} />
-            <input
-              placeholder="SEARCH..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className={`rounded-full pl-12 pr-6 py-3 text-[10px] font-black uppercase tracking-widest outline-none focus:border-[#CDA032]/50 transition-all w-40 focus:w-56 ${isLight ? 'bg-black/5 border border-black/10 text-black placeholder:text-black/40' : 'bg-white/5 border border-white/10 focus:border-white/30'}`}
-              style={isLight ? undefined : { backgroundColor: 'rgba(255,255,255,0.05)' }}
-            />
-          </div>
+        <div className="flex items-center gap-3">
+          {setTheme && (
+            <button
+              type="button"
+              onClick={() => setTheme(isLight ? 'dark' : 'light')}
+              className={`p-2.5 rounded-full border transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[#CDA032] focus-visible:ring-offset-2 ${
+                isLight
+                  ? 'border-black/10 bg-black/5 text-black hover:bg-black/10'
+                  : 'border-white/10 bg-white/5 text-white hover:bg-white/10 hover:shadow-[0_0_14px_rgba(205,160,50,0.45)]'
+              }`}
+              aria-label={isLight ? 'Switch to dark mode' : 'Switch to light mode'}
+            >
+              {isLight ? <Moon size={18} /> : <Sun size={18} />}
+            </button>
+          )}
           <button
             onClick={() => setIsMobileMenuOpen(true)}
             className={`lg:hidden p-2.5 sm:p-3 rounded-full transition-all ${isLight ? 'text-black/60 hover:text-black hover:bg-black/5' : 'text-white/40 hover:text-white hover:bg-white/5 hover:shadow-[0_0_14px_rgba(205,160,50,0.45)]'}`}
