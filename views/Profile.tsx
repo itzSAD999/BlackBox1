@@ -394,7 +394,7 @@ export const Profile: React.FC<ProfileProps> = ({
   };
 
   return (
-    <div className="view-transition max-w-[1600px] mx-auto px-6 md:px-8 py-12 flex flex-col lg:flex-row gap-8 min-h-[85vh] bg-black relative overflow-hidden">
+    <div className="view-transition max-w-[1600px] mx-auto px-4 sm:px-6 md:px-8 py-8 sm:py-12 flex flex-col lg:flex-row gap-6 sm:gap-8 min-h-[85vh] bg-black relative overflow-x-hidden">
       {/* Background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-[#B38B21]/[0.02] blur-[120px] rounded-full -ml-[250px] -mt-[250px]"></div>

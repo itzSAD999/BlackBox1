@@ -58,11 +58,11 @@ export const Cart: React.FC<CartProps> = ({
     .slice(0, 4);
 
   return (
-    <div className="bg-[#060605] min-h-screen text-white px-6 md:px-12 py-16">
+    <div className="bg-[#060605] min-h-screen text-white px-4 sm:px-6 lg:px-8 py-10 sm:py-14 md:py-16">
       <div className="max-w-7xl mx-auto">
 
         {/* Header */}
-        <div className="mb-14 flex items-center gap-4">
+        <div className="mb-8 sm:mb-12 md:mb-14 flex items-center gap-4">
           <ShoppingCart size={22} className="text-[#CDA032]" />
           <div>
             <h1 className="text-2xl font-semibold tracking-tight">
@@ -74,7 +74,7 @@ export const Cart: React.FC<CartProps> = ({
           </div>
         </div>
 
-        <div className="grid xl:grid-cols-12 gap-14">
+        <div className="grid xl:grid-cols-12 gap-8 lg:gap-14">
 
           {/* LEFT — ITEMS */}
           <div className="xl:col-span-8 space-y-6">
@@ -101,10 +101,10 @@ export const Cart: React.FC<CartProps> = ({
                 return (
                   <div
                     key={uniqueId}
-                    className="flex flex-col md:flex-row gap-6 border border-white/10 rounded-2xl p-6 bg-[#0b0b0a]"
+                    className="flex flex-col md:flex-row gap-5 sm:gap-6 border border-white/10 rounded-2xl p-4 sm:p-6 bg-[#0b0b0a]"
                   >
                     {/* Image */}
-                    <div className="w-28 h-28 rounded-xl bg-black/40 flex items-center justify-center border border-white/5">
+                    <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-xl bg-black/40 flex items-center justify-center border border-white/5">
                       <img
                         src={item.image}
                         alt={item.name}
@@ -221,7 +221,7 @@ export const Cart: React.FC<CartProps> = ({
 
           {/* RIGHT — SUMMARY */}
           <aside className="xl:col-span-4">
-            <div className="sticky top-24 border border-white/10 rounded-2xl p-8 bg-[#0b0b0a] space-y-8">
+            <div className="xl:sticky xl:top-24 border border-white/10 rounded-2xl p-5 sm:p-8 bg-[#0b0b0a] space-y-6 sm:space-y-8">
 
               <div className="flex items-center gap-3">
                 <Package size={18} className="text-[#CDA032]" />

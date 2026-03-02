@@ -103,10 +103,10 @@ export const Repair: React.FC = () => {
   ];
 
   const inputClass = "w-full border border-white/8 rounded-xl px-4 py-3 text-sm text-white outline-none transition-all focus:border-white/20 placeholder:text-white/20";
-  const inputBg = { backgroundColor: '#0d0d0b' };
+  const inputBg = { backgroundColor: 'var(--bb-surface)' };
 
   return (
-    <div className="min-h-screen text-white py-10 px-5 relative" style={{ backgroundColor: '#060605' }}>
+    <div className="min-h-screen text-white py-8 sm:py-10 px-4 sm:px-6 relative" style={{ backgroundColor: 'var(--bb-bg)' }}>
       {/* Subtle bg glow */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-0 w-[400px] h-[400px] rounded-full opacity-10" style={{ background: 'radial-gradient(circle, #B38B21 0%, transparent 70%)', filter: 'blur(100px)', transform: 'translate(-40%, -40%)' }} />
@@ -133,7 +133,7 @@ export const Repair: React.FC = () => {
             style={{ width: `${((step - 1) / 4) * 100}%`, backgroundColor: '#B38B21' }}
           />
           {steps.map(s => (
-            <div key={s.id} className="relative z-10 flex flex-col items-center gap-1.5 px-1" style={{ backgroundColor: '#060605' }}>
+            <div key={s.id} className="relative z-10 flex flex-col items-center gap-1.5 px-1" style={{ backgroundColor: 'var(--bb-bg)' }}>
               <div className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all border text-xs font-black ${step > s.id
                   ? 'text-black border-transparent'
                   : step === s.id
@@ -150,7 +150,7 @@ export const Repair: React.FC = () => {
         </div>
 
         {/* Form Card */}
-        <div className="rounded-2xl p-6 md:p-8 space-y-8" style={{ backgroundColor: '#0d0d0b' }}>
+        <div className="rounded-2xl p-6 md:p-8 space-y-8" style={{ backgroundColor: 'var(--bb-surface)' }}>
 
           {/* ── Step 1: Device ── */}
           {step === 1 && (

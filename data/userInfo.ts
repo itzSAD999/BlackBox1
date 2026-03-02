@@ -5,8 +5,8 @@ export const users: User[] = [
     id: "123456",
     name: "Stanley Sam",
     email: "stanleysam059@gmail.com",
-    role: "admin",
-    password: "ss123",
+    role: "user",
+    password: "Stanleysam123!@#",
     wishlist: ["prod1", "prod2"]
   },
   {

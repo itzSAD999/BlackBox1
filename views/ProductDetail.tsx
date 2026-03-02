@@ -159,10 +159,10 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
             </div>
 
             {/* Action Buttons */}
-            <div className="flex gap-4 flex-wrap">
+            <div className="flex gap-3 sm:gap-4 flex-wrap">
               <button
                 onClick={handleAddToCart}
-                className="flex-1 min-w-[200px] bg-[#B38B21] text-black font-bold py-4 rounded-full hover:opacity-90 transition shadow-lg"
+                className="w-full sm:flex-1 sm:min-w-[200px] bg-[#B38B21] text-black font-bold py-4 rounded-full hover:opacity-90 transition shadow-lg"
               >
                 Add to Cart
               </button>
@@ -183,7 +183,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
             </div>
 
             {/* Features */}
-            <div className="grid grid-cols-3 gap-6 pt-8 border-t border-white/10 text-center">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 pt-8 border-t border-white/10 text-center">
               <div>
                 <Truck className="mx-auto mb-2 text-[#B38B21]" />
                 <p className="text-xs text-white/60">Free Shipping</p>

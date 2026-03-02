@@ -69,11 +69,13 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onComplete }) => {
       </div>
 
       {/* Main content */}
-      <div className="text-center space-y-8 relative z-10 max-w-4xl mx-auto px-8">
+      <div className="text-center space-y-8 relative z-10 max-w-4xl mx-auto px-4 sm:px-8">
         {/* Logo animation */}
         <div className="relative inline-block">
-          <div className="w-32 h-32 bg-gradient-to-br from-[#D4AF37] to-[#F4E4C1] rounded-full flex items-center justify-center mx-auto mb-8 shadow-2xl opacity-0 animate-fade-in-scale transition-all duration-2000">
-            <Package size={64} className="text-black" />
+          <div className="w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 bg-gradient-to-br from-[#D4AF37] to-[#F4E4C1] rounded-full flex items-center justify-center mx-auto mb-8 shadow-2xl opacity-0 animate-fade-in-scale transition-all duration-2000">
+            <Package size={40} className="text-black sm:hidden" />
+            <Package size={56} className="text-black hidden sm:block md:hidden" />
+            <Package size={64} className="text-black hidden md:block" />
           </div>
           
           {/* Sparkles around logo */}
@@ -86,13 +88,13 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onComplete }) => {
         </div>
 
         {/* Title */}
-        <h1 className="text-6xl md:text-8xl font-heading font-bold text-off-white tracking-wider mb-4 opacity-0 animate-fade-in transition-all duration-2000" style={{animationDelay: '0.3s'}}>
+        <h1 className="text-4xl sm:text-5xl md:text-7xl font-heading font-bold text-off-white tracking-wider mb-4 opacity-0 animate-fade-in transition-all duration-2000" style={{animationDelay: '0.3s'}}>
           Welcome to BlackBox
         </h1>
 
         {/* Subtitle */}
         <div className="space-y-2 opacity-0 animate-fade-in transition-all duration-2000" style={{animationDelay: '0.6s'}}>
-          <p className="text-2xl md:text-3xl text-[#D4AF37] font-heading font-semibold tracking-wide">
+          <p className="text-lg sm:text-2xl md:text-3xl text-[#D4AF37] font-heading font-semibold tracking-wide">
             Premium Tech Repository
           </p>
           <div className="w-40 h-1 bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent mx-auto"></div>
@@ -100,10 +102,10 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onComplete }) => {
 
         {/* Description */}
         <div className="space-y-4 max-w-2xl mx-auto opacity-0 animate-fade-in transition-all duration-2000" style={{animationDelay: '0.9s'}}>
-          <p className="text-xl text-gray-300 leading-relaxed">
+          <p className="text-base sm:text-xl text-gray-300 leading-relaxed">
             Discover cutting-edge technology, expert repairs, and seamless trade-ins
           </p>
-          <p className="text-lg text-gray-400">
+          <p className="text-sm sm:text-lg text-gray-400">
             Your journey into premium tech starts here
           </p>
         </div>

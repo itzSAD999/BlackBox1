@@ -305,8 +305,22 @@ export const Admin: React.FC<AdminProps> = ({ setUser, navigateTo }) => {
 
   return (
     <div className="min-h-screen bg-black flex">
+      {/* Mobile backdrop */}
+      {isSidebarOpen && (
+        <div
+          className="lg:hidden fixed inset-0 z-[70] bg-black/70 backdrop-blur-sm"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
       {/* Sidebar */}
-      <div className={`${isSidebarOpen ? 'w-64' : 'w-20'} bg-gradient-to-b from-[#0a0a0a] to-[#050505] border-r border-white/5 transition-all duration-300 flex flex-col`}>
+      <div
+        className={`
+          fixed lg:static inset-y-0 left-0 z-[80]
+          ${isSidebarOpen ? 'translate-x-0 w-72 sm:w-80 lg:w-64' : '-translate-x-full lg:translate-x-0 lg:w-20'}
+          bg-gradient-to-b from-[#0a0a0a] to-[#050505] border-r border-white/5
+          transition-all duration-300 flex flex-col
+        `}
+      >
         <div className="p-6 border-b border-white/5">
           <div className="flex items-center justify-between">
             <div className={`flex items-center gap-3 ${!isSidebarOpen && 'justify-center'}`}>
@@ -341,7 +355,7 @@ export const Admin: React.FC<AdminProps> = ({ setUser, navigateTo }) => {
           ].map((item) => (
             <button
               key={item.id}
-              onClick={() => setActiveSection(item.id as any)}
+              onClick={() => { setActiveSection(item.id as any); if (window.innerWidth < 1024) setIsSidebarOpen(false); }}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all ${
                 activeSection === item.id
                   ? 'bg-[#B38B21] text-black'
@@ -372,7 +386,7 @@ export const Admin: React.FC<AdminProps> = ({ setUser, navigateTo }) => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
         {/* Header */}
-        <header className="bg-gradient-to-b from-[#0a0a0a] to-[#050505] border-b border-white/5 p-6">
+        <header className="bg-gradient-to-b from-[#0a0a0a] to-[#050505] border-b border-white/5 p-4 sm:p-6">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-black italic uppercase tracking-tight text-white">
@@ -401,7 +415,7 @@ export const Admin: React.FC<AdminProps> = ({ setUser, navigateTo }) => {
         </header>
 
         {/* Content */}
-        <main className="flex-1 p-8 overflow-auto">
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-auto">
           {activeSection === 'overview' && renderOverview()}
           {activeSection === 'orders' && renderOrders()}
           {activeSection === 'customers' && renderCustomers()}
