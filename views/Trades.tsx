@@ -26,6 +26,7 @@ export const Trades: React.FC<TradesProps> = ({
   const [currentSearch, setCurrentSearch] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
   const [targetColor, setTargetColor] = useState('');
+  const [showConfirmPopup, setShowConfirmPopup] = useState(false);
 
   const targetPhones = useMemo(() =>
     products.filter(p =>
@@ -418,26 +419,26 @@ export const Trades: React.FC<TradesProps> = ({
                 <p className="text-[10px] font-bold uppercase tracking-widest text-white/25 mb-2">Final Payment</p>
                 <p className="text-4xl font-black tracking-tight" style={{ color: '#B38B21' }}>{formatCurrency(difference)}</p>
                 <p className="text-[10px] text-white/20 mt-1">Inc. VAT (12.5%)</p>
-              </div>
 
               {/* CTA */}
               <button
                 disabled={!targetPhoneId || !currentPhone}
-                onClick={() => notify('Trade-in reservation initiated. Diagnostic appointment scheduled.')}
+                onClick={() => setShowConfirmPopup(true)}
                 className="w-full py-4 rounded-xl text-xs font-black uppercase tracking-widest text-black flex items-center justify-center gap-3 transition-all duration-200 disabled:opacity-20 disabled:cursor-not-allowed group"
                 style={{ backgroundColor: '#B38B21' }}
                 onMouseEnter={e => { if (!e.currentTarget.disabled) e.currentTarget.style.filter = 'brightness(1.1)'; }}
-                onMouseLeave={e => { e.currentTarget.style.filter = ''; }}
+                onMouseLeave={e => { if (!e.currentTarget.disabled) e.currentTarget.style.filter = ''; }}
               >
                 Confirm Trade
                 <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
               </button>
 
-              <div className="flex items-center justify-center gap-2 text-white/20">
+<div className="flex items-center justify-center gap-2 text-white/20">
                 <ShieldCheck size={12} style={{ color: '#B38B21' }} />
                 <span className="text-[10px] font-medium">Precision Exchange Program</span>
               </div>
             </div>
+          </div>
 
             {/* Guarantee card */}
             <div className="rounded-2xl p-5 space-y-2" style={{ backgroundColor: 'rgba(179,139,33,0.04)', borderLeft: '2px solid rgba(179,139,33,0.15)' }}>
@@ -479,6 +480,71 @@ export const Trades: React.FC<TradesProps> = ({
           </div>
         </section>
       </div>
+
+      {/* Confirmation Popup */}
+      {showConfirmPopup && (
+        <div className="fixed inset-0 z-[9999] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-black border border-white/10 rounded-3xl p-8 max-w-md w-full mx-auto shadow-2xl">
+            {/* Header */}
+            <div className="text-center mb-6">
+              <div className="w-16 h-16 bg-[#B38B21]/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <CheckCircle2 size={32} className="text-[#B38B21]" />
+              </div>
+              <h3 className="text-2xl font-black text-white mb-2">Trade-In Confirmed!</h3>
+              <p className="text-sm text-gray-400">Your trade-in reservation has been successfully initiated</p>
+            </div>
+
+            {/* Trade Details */}
+            <div className="space-y-4 mb-6">
+              <div className="flex justify-between items-center py-3 border-b border-white/5">
+                <span className="text-sm text-gray-400">Device Trading In</span>
+                <span className="text-sm font-semibold text-white">{currentPhone}</span>
+              </div>
+              <div className="flex justify-between items-center py-3 border-b border-white/5">
+                <span className="text-sm text-gray-400">Device Getting</span>
+                <span className="text-sm font-semibold text-white">{targetPhones.find(p => p.id === targetPhoneId)?.name || 'Selected Device'}</span>
+              </div>
+              <div className="flex justify-between items-center py-3 border-b border-white/5">
+                <span className="text-sm text-gray-400">Trade-In Value</span>
+                <span className="text-sm font-semibold text-[#B38B21]">{formatCurrency(tradeInValue)}</span>
+              </div>
+              <div className="flex justify-between items-center py-3">
+                <span className="text-sm text-gray-400">Final Payment</span>
+                <span className="text-lg font-black text-white">{formatCurrency(difference)}</span>
+              </div>
+            </div>
+
+            {/* Next Steps */}
+            <div className="bg-[#B38B21]/5 border border-[#B38B21]/20 rounded-xl p-4 mb-6">
+              <h4 className="text-sm font-semibold text-[#B38B21] mb-2">Next Steps</h4>
+              <ul className="space-y-1 text-xs text-gray-300">
+                <li>• Diagnostic appointment scheduled within 24hrs</li>
+                <li>• Bring your device and original packaging</li>
+                <li>• Receive instant credit upon approval</li>
+              </ul>
+            </div>
+
+            {/* Actions */}
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  setShowConfirmPopup(false);
+                  notify('Trade-in reservation initiated. Diagnostic appointment scheduled.');
+                }}
+                className="flex-1 py-3 bg-[#B38B21] text-black rounded-xl text-sm font-black uppercase tracking-wider transition-all hover:scale-105"
+              >
+                Got it
+              </button>
+              <button
+                onClick={() => setShowConfirmPopup(false)}
+                className="flex-1 py-3 bg-white/10 text-white rounded-xl text-sm font-semibold transition-all hover:bg-white/20"
+              >
+                View Details
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <style>{`
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }

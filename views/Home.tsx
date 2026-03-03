@@ -6,6 +6,7 @@ import {
 import { Link } from '@tanstack/react-router';
 import { Product, Category } from '../types';
 import { ProductCard } from '../components/ProductCard';
+import { getImagesForTheme, getPositionClasses, getBlurClasses } from '../data/heroImages';
 
 interface HomeProps {
   products: Product[];
@@ -17,12 +18,28 @@ interface HomeProps {
   compareIds: string[];
   onToggleCompare: (productId: string) => void;
   user: any;
+  theme: 'light' | 'dark';
 }
 
 export const Home: React.FC<HomeProps> = ({ 
-  products, setSelectedCategory, onQuickView, wishlist, toggleWishlist, onAddToCart, compareIds, onToggleCompare, user
+  products, setSelectedCategory, onQuickView, wishlist, toggleWishlist, onAddToCart, compareIds, onToggleCompare, user, theme
 }) => {
   const [currentReviewIndex, setCurrentReviewIndex] = useState(0);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  
+  // Get images for current theme
+  const themeImages = getImagesForTheme(theme);
+  
+  // Auto-rotate images every 4 seconds
+  useEffect(() => {
+    if (themeImages.length === 0) return;
+    
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % themeImages.length);
+    }, 4000);
+    
+    return () => clearInterval(interval);
+  }, [themeImages]);
 
   if (!products || products.length === 0) return null;
 
@@ -74,34 +91,61 @@ export const Home: React.FC<HomeProps> = ({
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-black subtle-texture"></div>
           
-          {/* Abstract geometric shapes */}
-          <div className="absolute inset-0 opacity-20">
-            <div className="absolute top-20 left-20 w-32 h-32 bg-gradient-to-br from-[#D4AF37]/20 to-transparent rounded-lg transform rotate-12 blur-sm"></div>
-            <div className="absolute top-40 right-32 w-40 h-24 bg-gradient-to-br from-[#D4AF37]/15 to-transparent rounded-lg transform -rotate-6 blur-sm"></div>
-            <div className="absolute bottom-32 left-1/3 w-28 h-28 bg-gradient-to-br from-white/10 to-transparent rounded-full blur-sm"></div>
-            <div className="absolute bottom-20 right-20 w-36 h-20 bg-gradient-to-br from-[#D4AF37]/18 to-transparent rounded-lg transform rotate-45 blur-sm"></div>
-            <div className="absolute top-1/2 left-1/4 w-32 h-24 bg-gradient-to-br from-gray-700/30 to-transparent rounded-lg transform -rotate-12 blur-sm"></div>
-            <div className="absolute top-1/3 right-1/4 w-16 h-24 bg-gradient-to-br from-[#D4AF37]/12 to-transparent rounded-lg transform rotate-6 blur-sm"></div>
-          </div>
+          {/* Single Background Image with Slideshow */}
+          {themeImages.length > 0 && (
+            <div className="absolute inset-0 overflow-hidden">
+              {themeImages.map((img, index) => (
+                <img 
+                  key={img.filename}
+                  src={`/${img.filename}`}
+                  alt={img.description}
+                  className={`absolute inset-0 w-full h-full object-cover transition-all duration-2000 ease-in-out ${
+                    index === currentImageIndex 
+                      ? 'opacity-100 scale-100' 
+                      : 'opacity-0 scale-105'
+                  }`}
+                  style={{ 
+                    filter: `${
+                      theme === 'light' && img.filename === 'BlackBox.jpeg' ? 'invert(1) brightness(1.2)' : ''
+                    }`,
+                    transform: index === currentImageIndex ? 'scale(1)' : 'scale(1.1)'
+                  }}
+                  loading="lazy"
+                />
+              ))}
+            </div>
+          )}
           
           {/* Dark overlay for text readability */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-black/60"></div>
+          <div className={`absolute inset-0 ${
+            theme === 'dark' 
+              ? 'bg-gradient-to-r from-black/60 via-transparent to-black/40' 
+              : 'bg-gradient-to-r from-black/20 via-transparent to-black/10'
+          }`}></div>
         </div>
 
         <div className="max-w-7xl mx-auto w-full relative z-10">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             {/* Left Side - Main Content */}
             <div className="space-y-8 animate-in fade-in slide-in-from-left-10 duration-1000 stagger-1">
-              <h1 className="text-5xl md:text-7xl lg:text-[5rem] font-heading font-bold tracking-wider leading-[0.9] text-off-white">
+              <h1 className={`text-5xl md:text-7xl lg:text-[5rem] font-heading font-bold tracking-wider leading-[0.9] ${
+          theme === 'dark' ? 'text-off-white' : 'text-gray-900'
+        }`}>
                 Redefining Your
                 <br />
-                <span className="text-[#D4AF37] bg-gradient-to-r from-[#D4AF37] to-[#F4E4C1] bg-clip-text text-transparent">
+                <span className={`bg-gradient-to-r bg-clip-text text-transparent ${
+                  theme === 'dark' 
+                    ? 'from-[#D4AF37] to-[#F4E4C1]' 
+                    : 'from-[#B38B21] to-[#D4AF37]'
+                }`}>
                   Tech Experience
                 </span>
               </h1>
               
               <div className="space-y-4 max-w-lg animate-in fade-in slide-in-from-left-8 duration-1000 delay-100 stagger-2">
-                <p className="text-lg text-gray-300 font-light leading-relaxed">
+                <p className={`text-lg font-light leading-relaxed ${
+                  theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+                }`}>
                   Premium tech products, expert repairs, and seamless trade-ins for the modern enthusiast.
                 </p>
               </div>
@@ -110,7 +154,11 @@ export const Home: React.FC<HomeProps> = ({
               <div className="flex flex-col sm:flex-row gap-4 pt-4 animate-in fade-in slide-in-from-left-8 duration-1000 delay-200 stagger-3">
                 <Link 
                   to="/store" 
-                  className="btn-press inline-flex px-12 py-5 bg-white text-black rounded-full text-sm font-heading font-semibold tracking-wider items-center gap-3 transition-all duration-300 hover:scale-105 hover:shadow-[0_20px_60px_rgba(255,255,255,0.3)] active:scale-95"
+                  className={`btn-press inline-flex px-12 py-5 rounded-full text-sm font-heading font-semibold tracking-wider items-center gap-3 transition-all duration-300 hover:scale-105 hover:shadow-[0_20px_60px_rgba(255,255,255,0.3)] active:scale-95 ${
+                    theme === 'dark' 
+                      ? 'bg-white text-black hover:shadow-[0_20px_60px_rgba(255,255,255,0.3)]' 
+                      : 'bg-black text-white hover:shadow-[0_20px_60px_rgba(0,0,0,0.2)]'
+                  }`}
                 >
                   Browse Products 
                   <ArrowRight className="transition-transform group-hover:translate-x-2" size={18} />
@@ -118,7 +166,11 @@ export const Home: React.FC<HomeProps> = ({
                 
                 <Link 
                   to="/profile" 
-                  className="btn-press inline-flex px-12 py-5 bg-black text-off-white border-2 border-white/20 rounded-full text-sm font-heading font-semibold tracking-wider items-center gap-3 transition-all duration-300 hover:bg-white hover:text-black hover:scale-105 active:scale-95"
+                  className={`btn-press inline-flex px-12 py-5 rounded-full text-sm font-heading font-semibold tracking-wider items-center gap-3 transition-all duration-300 hover:scale-105 active:scale-95 ${
+                    theme === 'dark'
+                      ? 'bg-black text-off-white border-2 border-white/20 hover:bg-white hover:text-black'
+                      : 'bg-white text-black border-2 border-black/20 hover:bg-black hover:text-white'
+                  }`}
                 >
                   About Us 
                   <ArrowRight className="transition-transform group-hover:translate-x-2" size={18} />
