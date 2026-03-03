@@ -14,6 +14,10 @@ export const INITIAL_PRODUCTS: Product[] = [
     image: 'https://images.unsplash.com/photo-1663499482523-1c0c1bae4ce1?auto=format&fit=crop&q=80&w=800',
     stock: 15,
     specs: ['128GB Storage', 'A15 Bionic', 'Ceramic Shield'],
+    variants: [
+      { name: 'Color', options: ['Black', 'White', 'Red', 'Blue', 'Purple', 'Green'] },
+      { name: 'Storage', options: ['128GB', '256GB', '512GB'] }
+    ],
   },
   {
     id: 'BB-102',
@@ -25,6 +29,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     description: 'Precision performance for iPad Pro, iPad Air, and iPad mini.',
     image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
     stock: 50,
+    variants: [
+      { name: 'Color', options: ['White', 'Black'] }
+    ],
   },
   {
     id: 'BB-103',
@@ -37,6 +44,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     description: 'Active Noise Cancellation and Adaptive Transparency.',
     image: 'https://images.unsplash.com/photo-1603351154351-5e2d0600bb77?auto=format&fit=crop&q=80&w=800',
     stock: 30,
+    variants: [
+      { name: 'Color', options: ['White', 'Black'] }
+    ],
   },
   {
     id: 'BB-104',
@@ -49,6 +59,9 @@ export const INITIAL_PRODUCTS: Product[] = [
     description: 'Experience lightning-fast loading and deeper immersion.',
     image: 'https://images.unsplash.com/photo-1606813907291-d86ebb9474ad?auto=format&fit=crop&q=80&w=800',
     stock: 12,
+    variants: [
+      { name: 'Color', options: ['White', 'Black', 'Red'] }
+    ],
   },
   {
     id: 'BB-105',
@@ -60,6 +73,10 @@ export const INITIAL_PRODUCTS: Product[] = [
     description: 'The worlds best 15-inch laptop.',
     image: 'https://images.unsplash.com/photo-1517336714467-d13a2323485d?auto=format&fit=crop&q=80&w=800',
     stock: 8,
+    variants: [
+      { name: 'Color', options: ['Space Gray', 'Silver', 'Midnight'] },
+      { name: 'Storage', options: ['256GB', '512GB', '1TB'] }
+    ],
   },
   {
     id: 'BB-106',
@@ -73,5 +90,8 @@ export const INITIAL_PRODUCTS: Product[] = [
     description: 'Vivid colors and crisp contrast on a larger OLED screen.',
     image: 'https://images.unsplash.com/photo-1578303512597-81e6cc155b3e?auto=format&fit=crop&q=80&w=1200',
     stock: 15,
+    variants: [
+      { name: 'Color', options: ['White', 'Red', 'Black'] }
+    ],
   }
 ];

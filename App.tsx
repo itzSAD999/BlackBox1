@@ -432,12 +432,14 @@ function RootComponent() {
           isOpen={isCompareOpen} 
           onClose={() => setIsCompareOpen(false)} 
           products={products.filter(p => compareIds.includes(p.id))} 
+          allProducts={products}
           onRemove={toggleCompare} 
+          onAdd={toggleCompare}
           onAddToCart={(p) => addToCart(p)} 
         />
 
         {notification && (
-          <div className="fixed bottom-12 left-1/2 -translate-x-1/2 z-[130] px-8 py-5 rounded-full shadow-2xl animate-in slide-in-from-bottom-10 flex items-center gap-5 bg-[#B38B21] text-black border-none">
+          <div className="fixed top-20 left-1/2 -translate-x-1/2 z-[130] px-8 py-5 rounded-full shadow-2xl animate-in slide-in-from-top-10 flex items-center gap-5 bg-[#B38B21] text-black border-none">
             {notification.type === 'success' ? <CheckCircle2 size={18}/> : <Activity size={18}/>}
             <p className="font-bold text-[10px] uppercase tracking-[0.3em]">{notification.msg}</p>
           </div>

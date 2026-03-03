@@ -23,6 +23,9 @@ export const Trades: React.FC<TradesProps> = ({
   const [condition, setCondition] = useState('excellent');
   const [targetPhoneId, setTargetPhoneId] = useState('');
   const [targetSearch, setTargetSearch] = useState('');
+  const [currentSearch, setCurrentSearch] = useState('');
+  const [selectedColor, setSelectedColor] = useState('');
+  const [targetColor, setTargetColor] = useState('');
 
   const targetPhones = useMemo(() =>
     products.filter(p =>
@@ -112,23 +115,89 @@ export const Trades: React.FC<TradesProps> = ({
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                {/* Model select */}
+                {/* Model select with search */}
                 <div className="space-y-2">
                   <label className="text-[10px] font-bold uppercase tracking-widest text-white/30 flex items-center gap-1.5">
                     <Smartphone size={11} style={{ color: '#B38B21' }} /> Model
                   </label>
                   <div className="relative">
-                    <select
+                    <input
+                      type="text"
+                      placeholder="Search and select your device..."
                       value={currentPhone}
-                      onChange={e => setCurrentPhone(e.target.value)}
-                      className="w-full border border-white/8 rounded-xl px-4 py-3 text-sm font-semibold text-white outline-none appearance-none cursor-pointer transition-all focus:border-white/20"
+                      onChange={e => {
+                        setCurrentPhone(e.target.value);
+                        setCurrentSearch(e.target.value);
+                      }}
+                      className="w-full border border-white/8 rounded-xl px-4 py-3 text-sm font-semibold text-white outline-none transition-all focus:border-white/20 pl-10"
                       style={{ backgroundColor: 'var(--bb-bg)' }}
-                    >
-                      <option value="">Select model</option>
-                      {Object.keys(valuations).map(v => <option key={v} value={v}>{v}</option>)}
-                      <option value="Other">Other Apple Device</option>
-                    </select>
-                    <ArrowRight size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-white/20 pointer-events-none rotate-90" />
+                    />
+                    <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" />
+                  </div>
+                  {currentSearch && (
+                    <div className="absolute z-20 w-full mt-1 border border-white/10 rounded-xl shadow-lg max-h-40 overflow-y-auto" style={{ backgroundColor: 'var(--bb-surface)' }}>
+                      {Object.keys(valuations).filter(v => 
+                        v.toLowerCase().includes(currentSearch.toLowerCase())
+                      ).map(v => (
+                        <button
+                          key={v}
+                          onClick={() => {
+                            setCurrentPhone(v);
+                            setCurrentSearch(v);
+                          }}
+                          className="w-full text-left px-4 py-2 text-sm text-white/80 hover:bg-white/5 transition-colors"
+                        >
+                          {v}
+                        </button>
+                      ))}
+                      <button
+                        onClick={() => {
+                          setCurrentPhone('Other');
+                          setCurrentSearch('Other');
+                        }}
+                        className="w-full text-left px-4 py-2 text-sm text-white/60 hover:bg-white/5 transition-colors border-t border-white/5"
+                      >
+                        Other Apple Device
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {/* Color Selection */}
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-white/30 flex items-center gap-1.5">
+                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#B38B21' }} /> Color
+                  </label>
+                  <div className="flex flex-wrap gap-2">
+                    {['Black', 'White', 'Red', 'Blue', 'Green', 'Purple', 'Pink', 'Gold', 'Silver'].map(color => (
+                      <button
+                        key={color}
+                        onClick={() => setSelectedColor(color)}
+                        className={`flex items-center gap-2 px-3 py-2 rounded-lg border transition-all ${
+                          selectedColor === color
+                            ? 'border-[#B38B21] bg-[#B38B21]/20 text-[#B38B21]'
+                            : 'border-white/10 hover:border-white/20 text-white/60'
+                        }`}
+                      >
+                        <div 
+                          className="w-4 h-4 rounded-full border-2"
+                          style={{ 
+                            backgroundColor: color.toLowerCase() === 'black' ? '#000' :
+                                             color.toLowerCase() === 'white' ? '#fff' :
+                                             color.toLowerCase() === 'red' ? '#ef4444' :
+                                             color.toLowerCase() === 'blue' ? '#3b82f6' :
+                                             color.toLowerCase() === 'green' ? '#10b981' :
+                                             color.toLowerCase() === 'purple' ? '#a855f7' :
+                                             color.toLowerCase() === 'pink' ? '#ec4899' :
+                                             color.toLowerCase() === 'gold' ? '#f59e0b' :
+                                             color.toLowerCase() === 'silver' ? '#9ca3af' :
+                                             '#6b7280',
+                            borderColor: selectedColor === color ? '#B38B21' : 'rgba(255,255,255,0.3)'
+                          }}
+                        />
+                        <span className="text-xs">{color}</span>
+                      </button>
+                    ))}
                   </div>
                 </div>
 
@@ -244,6 +313,48 @@ export const Trades: React.FC<TradesProps> = ({
                 )}
               </div>
             </section>
+
+            {/* Target Phone Color Selection */}
+            {targetPhone && (
+              <section className="rounded-2xl p-6 md:p-8 space-y-4" style={{ backgroundColor: 'var(--bb-surface)' }}>
+                <div className="flex items-center gap-3">
+                  <span className="w-6 h-6 rounded-lg text-[10px] font-black text-black flex items-center justify-center" style={{ backgroundColor: '#B38B21' }}>02</span>
+                  <h2 className="text-sm font-black uppercase tracking-widest text-white/80">Choose Color</h2>
+                </div>
+                <p className="text-xs text-white/40">Select your preferred color for the new device</p>
+                <div className="flex flex-wrap gap-2">
+                  {['Black', 'White', 'Red', 'Blue', 'Green', 'Purple', 'Pink', 'Gold', 'Silver'].map(color => (
+                    <button
+                      key={color}
+                      onClick={() => setTargetColor(color)}
+                      className={`flex items-center gap-2 px-3 py-2 rounded-lg border transition-all ${
+                        targetColor === color
+                          ? 'border-[#B38B21] bg-[#B38B21]/20 text-[#B38B21]'
+                          : 'border-white/10 hover:border-white/20 text-white/60'
+                      }`}
+                    >
+                      <div 
+                        className="w-4 h-4 rounded-full border-2"
+                        style={{ 
+                          backgroundColor: color.toLowerCase() === 'black' ? '#000' :
+                                           color.toLowerCase() === 'white' ? '#fff' :
+                                           color.toLowerCase() === 'red' ? '#ef4444' :
+                                           color.toLowerCase() === 'blue' ? '#3b82f6' :
+                                           color.toLowerCase() === 'green' ? '#10b981' :
+                                           color.toLowerCase() === 'purple' ? '#a855f7' :
+                                           color.toLowerCase() === 'pink' ? '#ec4899' :
+                                           color.toLowerCase() === 'gold' ? '#f59e0b' :
+                                           color.toLowerCase() === 'silver' ? '#9ca3af' :
+                                           '#6b7280',
+                          borderColor: targetColor === color ? '#B38B21' : 'rgba(255,255,255,0.3)'
+                        }}
+                      />
+                      <span className="text-xs">{color}</span>
+                    </button>
+                  ))}
+                </div>
+              </section>
+            )}
           </div>
 
           {/* ── Sidebar ── */}

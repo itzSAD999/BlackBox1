@@ -116,6 +116,13 @@ export const Repair: React.FC = () => {
 
         {/* Header */}
         <header className="flex items-center gap-3 pb-6" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+          <button
+            onClick={() => navigate({ to: '/' })}
+            className="p-3 rounded-xl border border-white/10 hover:border-white/20 transition-colors"
+            style={{ backgroundColor: 'var(--bb-surface)' }}
+          >
+            <ArrowLeft size={18} className="text-white/60" />
+          </button>
           <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#B38B21' }}>
             <Wrench size={17} className="text-black" />
           </div>
@@ -300,14 +307,20 @@ export const Repair: React.FC = () => {
             <div className="space-y-8">
               <div className="space-y-3">
                 <SectionTitle icon={<Calendar size={15} />} title="Select Date" required />
-                <input
-                  type="date"
-                  value={formData.date}
-                  onChange={e => setFormData({ ...formData, date: e.target.value })}
-                  min={new Date().toISOString().split('T')[0]}
-                  className={inputClass}
-                  style={inputBg}
-                />
+                <div className="relative">
+                  <input
+                    type="date"
+                    value={formData.date}
+                    onChange={e => setFormData({ ...formData, date: e.target.value })}
+                    min={new Date().toISOString().split('T')[0]}
+                    className={`${inputClass} pl-12`}
+                    style={inputBg}
+                  />
+                  <Calendar 
+                    size={16} 
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30 pointer-events-none"
+                  />
+                </div>
               </div>
 
               <div className="space-y-3 pt-6" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>

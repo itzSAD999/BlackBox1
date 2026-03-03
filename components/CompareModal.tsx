@@ -1,21 +1,30 @@
-
-import React from 'react';
-import { X, ShoppingCart, Trash2, CheckCircle2, Scale, Info } from 'lucide-react';
+import React, { useState } from 'react';
+import { X, ShoppingCart, Trash2, CheckCircle2, Scale, Info, Plus, Search, ArrowLeft, GitCompare } from 'lucide-react';
 import { Product } from '../types';
 import { formatCurrency } from '../lib/utils';
 
 interface CompareModalProps {
   products: Product[];
+  allProducts: Product[];
   isOpen: boolean;
   onClose: () => void;
   onRemove: (id: string) => void;
+  onAdd: (id: string) => void;
   onAddToCart: (p: Product) => void;
 }
 
 export const CompareModal: React.FC<CompareModalProps> = ({ 
-  products, isOpen, onClose, onRemove, onAddToCart 
+  products, allProducts, isOpen, onClose, onRemove, onAdd, onAddToCart 
 }) => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [showAddDevices, setShowAddDevices] = useState(false);
+
   if (!isOpen) return null;
+
+  const availableProducts = allProducts.filter(p => 
+    !products.find(cp => cp.id === p.id) &&
+    (searchTerm === '' || p.name.toLowerCase().includes(searchTerm.toLowerCase()))
+  );
 
   return (
     <div className="fixed inset-0 z-[150] flex items-center justify-center p-4 md:p-12">
@@ -23,19 +32,66 @@ export const CompareModal: React.FC<CompareModalProps> = ({
       
       <div className="relative w-full max-w-[1440px] bg-black border border-white/10 rounded-[3rem] md:rounded-[4rem] shadow-2xl flex flex-col max-h-[90vh] overflow-hidden">
         <div className="p-8 md:p-12 border-b border-white/5 flex items-center justify-between bg-black">
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={onClose}
+              className="p-2 bg-white/5 hover:bg-white hover:text-black rounded-full transition-all border border-white/5"
+            >
+              <ArrowLeft size={18} />
+            </button>
             <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-black">
-              <Scale size={28} />
+              <GitCompare size={28} />
             </div>
             <div>
-              <h2 className="text-3xl font-serif-luxury font-black italic uppercase tracking-tighter">Hardware Matrix</h2>
-              <p className="text-[10px] font-black uppercase tracking-[0.5em] text-white/20 italic">/ BENCHMARK ANALYSIS</p>
+              <h2 className="text-3xl font-serif-luxury font-black italic uppercase tracking-tighter">Compare Products</h2>
+              <p className="text-[10px] font-black uppercase tracking-[0.5em] text-white/20 italic">{products.length} products selected</p>
             </div>
           </div>
-          <button onClick={onClose} className="p-4 bg-white/5 hover:bg-white hover:text-black rounded-full transition-all border border-white/10">
-            <X size={24} />
-          </button>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setShowAddDevices(!showAddDevices)}
+              className="px-4 py-2 bg-[#B38B21] text-black text-[10px] font-black uppercase tracking-[0.3em] rounded-xl flex items-center gap-2 hover:bg-[#B38B21]/90 transition-colors"
+            >
+              <Plus size={14} /> Compare
+            </button>
+            <button onClick={onClose} className="p-4 bg-white/5 hover:bg-white hover:text-black rounded-full transition-all border border-white/10">
+              <X size={24} />
+            </button>
+          </div>
         </div>
+
+        {/* Add Devices Section */}
+        {showAddDevices && (
+          <div className="border-b border-white/5 bg-[#0a0a0a] p-6">
+            <div className="relative mb-4">
+              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" />
+              <input
+                type="text"
+                placeholder="Search devices to compare..."
+                value={searchTerm}
+                onChange={e => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:border-[#B38B21] transition-colors"
+              />
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 max-h-60 overflow-y-auto">
+              {availableProducts.slice(0, 8).map(p => (
+                <button
+                  key={p.id}
+                  onClick={() => onAdd(p.id)}
+                  className="p-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-[#B38B21] transition-all text-left"
+                >
+                  <div className="flex items-center gap-2">
+                    <img src={p.image} alt={p.name} className="w-8 h-8 object-contain" />
+                    <div className="min-w-0">
+                      <p className="text-xs font-black text-white truncate">{p.name}</p>
+                      <p className="text-[9px] text-white/40">{formatCurrency(p.price)}</p>
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div className="flex-1 overflow-auto p-6 md:p-12 no-scrollbar">
           {products.length === 0 ? (
@@ -45,7 +101,171 @@ export const CompareModal: React.FC<CompareModalProps> = ({
             </div>
           ) : (
             <>
-              {/* Mobile-first comparison cards */}
+              {/* Desktop side-by-side comparison */}
+              <div className="hidden lg:block">
+                <div className="flex gap-6 overflow-x-auto pb-6">
+                  {products.map((p) => (
+                    <div key={p.id} className="flex-1 min-w-[300px] max-w-[400px]">
+                      <div className="bg-[#0a0a0a] border border-white/10 rounded-3xl overflow-hidden">
+                        {/* Product Header */}
+                        <div className="relative p-6 border-b border-white/5 bg-black">
+                          <button
+                            onClick={() => onRemove(p.id)}
+                            className="absolute top-4 right-4 p-1.5 rounded-full bg-white/10 hover:bg-red-500/20 text-white/60 hover:text-red-400 transition-colors"
+                            aria-label="Remove from compare"
+                          >
+                            <X size={14} />
+                          </button>
+                          <div className="text-center">
+                            <div className="w-20 h-20 rounded-xl bg-black/40 border border-white/5 flex items-center justify-center overflow-hidden mx-auto mb-4">
+                              <img src={p.image} alt={p.name} className="w-full h-full object-contain" />
+                            </div>
+                            <h3 className="text-lg font-black text-white uppercase tracking-wider">{p.name}</h3>
+                            <p className="text-sm font-black uppercase tracking-widest text-white/40 italic">{p.category}</p>
+                            <p className="text-xl font-black text-white">{formatCurrency(p.price)}</p>
+                          </div>
+                        </div>
+
+                        {/* Product Details */}
+                        <div className="p-6 space-y-4">
+                          <div className="space-y-2">
+                            <h4 className="text-sm font-black uppercase tracking-widest text-white/30">Price</h4>
+                            <div className="flex gap-2 items-center">
+                              <span className="text-lg font-black text-white">{formatCurrency(p.price)}</span>
+                              {products.length > 1 && (
+                                <div className="flex gap-1">
+                                  {products.map(other => {
+                                    const priceDiff = other.price - p.price;
+                                    return (
+                                      <div key={other.id} className="text-center">
+                                        <span className={`text-sm font-medium ${
+                                          priceDiff > 0 ? 'text-red-400' : priceDiff < 0 ? 'text-green-400' : 'text-white/60'
+                                        }`}>
+                                          {priceDiff > 0 ? '+' : ''}{Math.abs(priceDiff)}
+                                        </span>
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+
+                          <div className="space-y-2">
+                            <h4 className="text-sm font-black uppercase tracking-widest text-white/30">Winner</h4>
+                            <div className="flex items-center gap-2">
+                              {(() => {
+                                const bestPrice = Math.min(...products.map(p => p.price));
+                                const bestStock = products.filter(p => p.stock > 0).length;
+                                const bestRating = Math.max(...products.map(p => p.rating || 0));
+                                
+                                const isBestPrice = p.price === bestPrice;
+                                const isBestStock = p.stock > 0 && bestStock === 1;
+                                const isBestRating = p.rating === bestRating;
+                                
+                                const wins = [];
+                                if (isBestPrice) wins.push('Best Price');
+                                if (isBestStock) wins.push('In Stock');
+                                if (isBestRating) wins.push('Top Rated');
+                                
+                                return (
+                                  <div className="flex gap-1">
+                                    {wins.map((win, i) => (
+                                      <span key={i} className="px-2 py-1 bg-[#B38B21] text-black text-[8px] font-black uppercase tracking-widest rounded-full">
+                                        {win}
+                                      </span>
+                                    ))}
+                                  </div>
+                                );
+                              })()}
+                            </div>
+                          </div>
+
+                          <div className="space-y-2">
+                            <h4 className="text-sm font-black uppercase tracking-widest text-white/30">Status</h4>
+                            <div className="flex items-center gap-2">
+                              <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${
+                                p.stock > 0 ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400'
+                              }`}>
+                                {p.stock > 0 ? 'IN STOCK' : 'OUT OF STOCK'}
+                              </span>
+                            </div>
+                          </div>
+
+                          <div className="space-y-2">
+                            <h4 className="text-sm font-black uppercase tracking-widest text-white/30">Rating</h4>
+                            <div className="flex items-center gap-2">
+                              <div className="flex gap-0.5">
+                                {[...Array(5)].map((_, i) => (
+                                  <div key={i} className={`w-2 h-2 rounded-full ${
+                                    i < Math.floor(p.rating || 4) ? 'bg-[#B38B21]' : 'bg-white/10'
+                                  }`} />
+                                ))}
+                              </div>
+                              <span className="text-sm text-white/60">({p.reviewCount || 0})</span>
+                            </div>
+                          </div>
+
+                          <div className="space-y-2">
+                            <h4 className="text-sm font-black uppercase tracking-widest text-white/30">Specifications</h4>
+                            <div className="space-y-2">
+                              {p.specs?.slice(0, 4).map((spec, i) => (
+                                <div key={i} className="text-[10px] text-white/60 bg-white/5 rounded-lg px-3 py-2">
+                                  {spec}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          <div className="space-y-2">
+                            <h4 className="text-sm font-black uppercase tracking-widest text-white/30">Features</h4>
+                            <div className="space-y-1">
+                              <div className="flex items-center gap-2">
+                                <div className="w-2 h-2 rounded-full bg-white/10" />
+                                <span className="text-[10px] text-white/60">Free Shipping</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <div className="w-2 h-2 rounded-full bg-white/10" />
+                                <span className="text-[10px] text-white/60">Warranty</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <div className="w-2 h-2 rounded-full bg-white/10" />
+                                <span className="text-[10px] text-white/60">Returns</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="space-y-2">
+                            <h4 className="text-sm font-black uppercase tracking-widest text-white/30">Performance</h4>
+                            <div className="grid grid-cols-2 gap-2">
+                              <div className="text-center">
+                                <div className="text-[10px] text-white/30">Speed</div>
+                                <div className="text-sm font-black text-white">Fast</div>
+                              </div>
+                              <div className="text-center">
+                                <div className="text-[10px] text-white/30">Quality</div>
+                                <div className="text-sm font-black text-white">Premium</div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="pt-4">
+                            <button
+                              onClick={() => onAddToCart(p)}
+                              className="w-full py-3 bg-white text-black text-[10px] font-black uppercase tracking-[0.35em] rounded-2xl active:scale-[0.98] transition-transform"
+                            >
+                              <ShoppingCart size={14} className="mr-2" />
+                              Add to Cart
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Mobile comparison cards */}
               <div className="lg:hidden space-y-4">
                 {products.map((p) => (
                   <div key={p.id} className="rounded-3xl border border-white/10 bg-[#050505] overflow-hidden">
@@ -67,82 +287,123 @@ export const CompareModal: React.FC<CompareModalProps> = ({
                             <Trash2 size={14} />
                           </button>
                         </div>
-                        <div className="mt-3 grid grid-cols-2 gap-3">
-                          <div className="rounded-2xl bg-white/5 border border-white/10 p-3">
-                            <p className="text-[9px] font-black uppercase tracking-[0.35em] text-white/30">Price</p>
-                            <p className="text-base font-black italic tracking-tighter mt-1">{formatCurrency(p.price)}</p>
-                          </div>
-                          <div className="rounded-2xl bg-white/5 border border-white/10 p-3">
-                            <p className="text-[9px] font-black uppercase tracking-[0.35em] text-white/30">Status</p>
-                            <p className="text-[10px] font-black uppercase tracking-widest text-white/60 italic mt-1">
-                              {p.stock > 0 ? 'READY' : 'LOGGING'}
-                            </p>
-                          </div>
+                      </div>
+                      <div className="mt-3 grid grid-cols-2 gap-3">
+                        <div className="rounded-2xl bg-white/5 border border-white/10 p-3">
+                          <p className="text-[9px] font-black uppercase tracking-[0.35em] text-white/30">Price</p>
+                          <p className="text-base font-black italic tracking-tighter mt-1">{formatCurrency(p.price)}</p>
                         </div>
-                        <div className="mt-3 rounded-2xl bg-white/5 border border-white/10 p-3">
-                          <p className="text-[9px] font-black uppercase tracking-[0.35em] text-white/30">Core specs</p>
-                          <div className="mt-2 space-y-1">
-                            {p.specs?.slice(0, 3).map((spec, i) => (
-                              <div key={i} className="flex items-start gap-2">
-                                <div className="w-1 h-1 rounded-full bg-white/40 mt-1.5 shrink-0" />
-                                <p className="text-[10px] font-bold text-white/60 leading-snug">{spec}</p>
-                              </div>
-                            ))}
-                          </div>
+                        <div className="rounded-2xl bg-white/5 border border-white/10 p-3">
+                          <p className="text-[9px] font-black uppercase tracking-[0.35em] text-white/30">Status</p>
+                          <p className="text-[10px] font-black uppercase tracking-widest text-white/60 italic mt-1">
+                            {p.stock > 0 ? 'READY' : 'LOGGING'}
+                          </p>
                         </div>
                       </div>
-                    </div>
-                    <div className="p-4 border-t border-white/10 bg-white/5">
-                      <button
-                        onClick={() => onAddToCart(p)}
-                        className="w-full py-4 bg-white text-black text-[10px] font-black uppercase tracking-[0.35em] rounded-2xl active:scale-[0.98] transition-transform"
-                      >
-                        Authorize
-                      </button>
+                      <div className="rounded-2xl bg-white/5 border border-white/10 p-3">
+                        <p className="text-[9px] font-black uppercase tracking-[0.35em] text-white/30">Core specs</p>
+                        <div className="mt-2 space-y-1">
+                          {p.specs?.slice(0, 3).map((spec, i) => (
+                            <div key={i} className="flex items-start gap-2">
+                              <div className="w-1 h-1 rounded-full bg-white/40 mt-1.5 shrink-0" />
+                              <p className="text-[10px] font-bold text-white/60 leading-snug">{spec}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="p-4 border-t border-white/10 bg-white/5">
+                        <button
+                          onClick={() => onAddToCart(p)}
+                          className="w-full py-4 bg-white text-black text-[10px] font-black uppercase tracking-[0.35em] rounded-2xl active:scale-[0.98] transition-transform"
+                        >
+                          <ShoppingCart size={14} className="mr-2" />
+                          Add to Cart
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ))}
               </div>
 
-              {/* Desktop matrix (keeps existing layout) */}
-              <div className="hidden lg:block overflow-x-auto no-scrollbar">
-                <div className="min-w-[1200px] grid grid-cols-[250px_repeat(auto-fit,minmax(250px,1fr))] gap-px bg-white/5 border border-white/10 rounded-[2.5rem] overflow-hidden shadow-2xl">
-                  <div className="flex flex-col bg-black sticky left-0 z-10 shadow-[20px_0_50px_rgba(0,0,0,0.5)]">
-                    <div className="h-72 p-10 flex items-end">
-                       <span className="text-[10px] font-black uppercase tracking-[0.5em] text-white/10 italic">Technical Axis</span>
-                    </div>
-                    {['Model Identity', 'Batch Class', 'Pricing (GHS)', 'Precision Index', 'Availability', 'Core Specs'].map(label => (
-                      <div key={label} className="p-10 border-t border-white/5 flex items-center h-24 bg-black">
-                        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/20 italic">{label}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {products.map((p) => (
-                    <div key={p.id} className="flex flex-col bg-[#050505] relative border-l border-white/5">
-                      <button onClick={() => onRemove(p.id)} className="absolute top-6 right-6 p-2 bg-black/40 hover:bg-white hover:text-black rounded-full transition-all border border-white/10">
-                        <Trash2 size={14} />
-                      </button>
-                      <div className="h-72 p-12 flex items-center justify-center">
-                        <img src={p.image} className="w-full h-full object-contain drop-shadow-[0_30px_50px_rgba(255,255,255,0.05)]" alt={p.name} />
-                      </div>
-                      <div className="p-10 border-t border-white/5 h-24 flex items-center"><h3 className="text-[11px] font-black uppercase tracking-widest italic leading-tight">{p.name}</h3></div>
-                      <div className="p-10 border-t border-white/5 h-24 flex items-center"><span className="text-[9px] font-black text-white/30 uppercase tracking-widest italic">{p.category}</span></div>
-                      <div className="p-10 border-t border-white/5 h-24 flex items-center"><p className="text-xl font-black italic tracking-tighter">{formatCurrency(p.price)}</p></div>
-                      <div className="p-10 border-t border-white/5 h-24 flex items-center gap-3"><CheckCircle2 size={16} className="text-white/20" /><p className="text-[10px] font-black uppercase tracking-widest italic opacity-40">{p.rating || '4.5'} Precision</p></div>
-                      <div className="p-10 border-t border-white/5 h-24 flex items-center"><p className="text-[10px] font-black uppercase tracking-widest text-white/10 italic">/ {p.stock > 0 ? 'READY' : 'LOGGING'}</p></div>
-                      <div className="p-10 border-t border-white/5 min-h-48 space-y-2">
-                        {p.specs?.slice(0, 3).map((spec, i) => (
-                          <div key={i} className="flex items-start gap-2 opacity-30"><div className="w-1 h-1 rounded-full bg-white mt-1.5 shrink-0" /><p className="text-[9px] font-black uppercase italic tracking-widest">{spec}</p></div>
+              {/* Detailed Comparison Matrix */}
+              <div className="mt-8 p-6 bg-[#0a0a0a] border border-white/10 rounded-3xl">
+                <h3 className="text-lg font-black uppercase tracking-wider text-white mb-6">Detailed Comparison Matrix</h3>
+                <div className="overflow-x-auto">
+                  <table className="w-full border-collapse">
+                    <thead>
+                      <tr className="border-b border-white/10">
+                        <th className="text-left p-3 text-[10px] font-black uppercase tracking-widest text-white/30">Feature</th>
+                        {products.map(p => (
+                          <th key={p.id} className="p-3 text-center min-w-[150px]">
+                            <div className="w-12 h-12 rounded-lg bg-black/40 border border-white/5 flex items-center justify-center overflow-hidden mx-auto mb-2">
+                              <img src={p.image} alt={p.name} className="w-full h-full object-contain" />
+                            </div>
+                            <div className="text-sm font-black text-white uppercase tracking-wider truncate">{p.name}</div>
+                          </th>
                         ))}
-                      </div>
-                      <div className="p-8 border-t border-white/5 bg-white/5 flex flex-col justify-end">
-                        <button onClick={() => onAddToCart(p)} className="w-full py-5 bg-white text-black text-[9px] font-black uppercase tracking-[0.4em] rounded-full active:scale-95 transition-transform">
-                          Authorize
-                        </button>
-                      </div>
-                    </div>
-                  ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="border-b border-white/5">
+                        <td className="p-3 text-[10px] font-black uppercase tracking-widest text-white/30">Price</td>
+                        {products.map(p => (
+                          <td key={p.id} className="p-3 text-center">
+                            <span className="text-sm font-black text-white">{formatCurrency(p.price)}</span>
+                          </td>
+                        ))}
+                      </tr>
+                      <tr className="border-b border-white/5">
+                        <td className="p-3 text-[10px] font-black uppercase tracking-widest text-white/30">Stock</td>
+                        {products.map(p => (
+                          <td key={p.id} className="p-3 text-center">
+                            <span className={`px-2 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${
+                              p.stock > 0 ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400'
+                            }`}>
+                              {p.stock > 0 ? 'Available' : 'Out of Stock'}
+                            </span>
+                          </td>
+                        ))}
+                      </tr>
+                      <tr className="border-b border-white/5">
+                        <td className="p-3 text-[10px] font-black uppercase tracking-widest text-white/30">Rating</td>
+                        {products.map(p => (
+                          <td key={p.id} className="p-3 text-center">
+                            <div className="flex items-center justify-center gap-1">
+                              <div className="flex gap-0.5">
+                                {[...Array(5)].map((_, i) => (
+                                  <div key={i} className={`w-2 h-2 rounded-full ${
+                                    i < Math.floor(p.rating || 4) ? 'bg-[#B38B21]' : 'bg-white/10'
+                                  }`} />
+                                ))}
+                              </div>
+                              <span className="text-sm text-white/60">({p.reviewCount || 0})</span>
+                            </div>
+                          </td>
+                        ))}
+                      </tr>
+                      <tr className="border-b border-white/5">
+                        <td className="p-3 text-[10px] font-black uppercase tracking-widest text-white/30">Category</td>
+                        {products.map(p => (
+                          <td key={p.id} className="p-3 text-center">
+                            <span className="text-sm text-white/60">{p.category}</span>
+                          </td>
+                        ))}
+                      </tr>
+                      <tr>
+                        <td className="p-3 text-[10px] font-black uppercase tracking-widest text-white/30">Best For</td>
+                        {products.map(p => (
+                          <td key={p.id} className="p-3 text-center">
+                            <span className="text-sm text-white/60">
+                              {p.category === 'iPhone' ? 'Mobile Users' : 
+                               p.category === 'Laptop' ? 'Professionals' :
+                               p.category === 'Gaming' ? 'Gamers' :
+                               p.category === 'Accessories' ? 'General Use' : 'Tech Enthusiasts'}
+                            </span>
+                          </td>
+                        ))}
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </>
