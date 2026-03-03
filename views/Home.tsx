@@ -198,7 +198,7 @@ export const Home: React.FC<HomeProps> = ({
             </h2>
             <div className="w-32 h-0.5 bg-[#D4AF37] mx-auto mb-6"></div>
             <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-              Discover our curated selection of premium tech products
+              Discover our curated selection of premium tech products hmdrgdbfcdhexewetrhyt
             </p>
             <div className="flex justify-center items-center gap-2 mt-4">
               <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
