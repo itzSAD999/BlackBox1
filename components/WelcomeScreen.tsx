@@ -72,18 +72,17 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onComplete }) => {
       <div className="text-center space-y-8 relative z-10 max-w-4xl mx-auto px-4 sm:px-8">
         {/* Logo animation */}
         <div className="relative inline-block">
-          <div className="w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 bg-gradient-to-br from-[#D4AF37] to-[#F4E4C1] rounded-full flex items-center justify-center mx-auto mb-8 shadow-2xl opacity-0 animate-fade-in-scale transition-all duration-2000">
-            <Package size={40} className="text-black sm:hidden" />
-            <Package size={56} className="text-black hidden sm:block md:hidden" />
-            <Package size={64} className="text-black hidden md:block" />
+          <div>
+            <img src="/blacklogo.png" alt="blacklogo" className="w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full"  />
           </div>
+
           
           {/* Sparkles around logo */}
           <div className="absolute -top-4 -right-4 opacity-0 animate-fade-in transition-all duration-2000" style={{animationDelay: '0.5s'}}>
-            <Sparkles size={24} className="text-[#D4AF37]" />
+            {/* <Sparkles size={24} className="text-[#D4AF37]" /> */}
           </div>
           <div className="absolute -bottom-4 -left-4 opacity-0 animate-fade-in transition-all duration-2000" style={{animationDelay: '0.8s'}}>
-            <Sparkles size={20} className="text-[#D4AF37]" />
+            {/* <Sparkles size={20} className="text-[#D4AF37]" /> */}
           </div>
         </div>
 
@@ -106,7 +105,7 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onComplete }) => {
             Discover cutting-edge technology, expert repairs, and seamless trade-ins
           </p>
           <p className="text-sm sm:text-lg text-gray-400">
-            Your journey into premium tech starts here
+            Your journey starts here
           </p>
         </div>
 

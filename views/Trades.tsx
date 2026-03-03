@@ -80,7 +80,7 @@ export const Trades: React.FC<TradesProps> = ({
               <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ backgroundColor: '#B38B21' }}>
                 <RefreshCcw size={16} className="text-black" style={{ animation: 'spin 8s linear infinite' }} />
               </div>
-              <span className="text-[10px] font-bold uppercase tracking-[0.35em] text-white/30">Exchange Program</span>
+              <span className="text-[10px] font-bold uppercase tracking-[0.35em] text-white/30"></span>
             </div>
             <h1 className="text-3xl md:text-4xl font-black uppercase tracking-tight leading-none text-white">Trade In</h1>
             <p className="text-xs text-white/30 font-medium mt-1">Get the best value for your current device</p>
