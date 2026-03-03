@@ -266,57 +266,66 @@ export const CompareModal: React.FC<CompareModalProps> = ({
               </div>
 
               {/* Mobile comparison cards */}
-              <div className="lg:hidden space-y-3">
+              <div className="lg:hidden space-y-4">
                 {products.map((p) => (
                   <div key={p.id} className="rounded-2xl border border-white/10 bg-[#050505] overflow-hidden">
-                    <div className="p-3 flex items-start gap-3">
-                      <div className="w-16 h-16 rounded-xl bg-black/40 border border-white/5 flex items-center justify-center overflow-hidden flex-shrink-0">
-                        <img src={p.image} alt={p.name} className="w-full h-full object-contain" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-start justify-between gap-3">
-                          <div className="min-w-0">
-                            <h3 className="text-sm font-black uppercase tracking-widest italic truncate">{p.name}</h3>
-                            <p className="text-[10px] font-black uppercase tracking-widest text-white/40 italic mt-1">{p.category}</p>
+                    <div className="p-4">
+                      {/* Header with image and basic info */}
+                      <div className="flex items-start gap-4 mb-4">
+                        <div className="w-20 h-20 rounded-xl bg-black/40 border border-white/5 flex items-center justify-center overflow-hidden flex-shrink-0">
+                          <img src={p.image} alt={p.name} className="w-full h-full object-contain" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-start justify-between gap-3">
+                            <div className="min-w-0 flex-1">
+                              <h3 className="text-sm font-black uppercase tracking-widest italic break-words">{p.name}</h3>
+                              <p className="text-[10px] font-black uppercase tracking-widest text-white/40 italic mt-1">{p.category}</p>
+                            </div>
+                            <button
+                              onClick={() => onRemove(p.id)}
+                              className="p-2 rounded-full bg-white/5 border border-white/10 text-white/60 flex-shrink-0"
+                              aria-label="Remove from compare"
+                            >
+                              <Trash2 size={14} />
+                            </button>
                           </div>
-                          <button
-                            onClick={() => onRemove(p.id)}
-                            className="p-2 rounded-full bg-white/5 border border-white/10 text-white/60"
-                            aria-label="Remove from compare"
-                          >
-                            <Trash2 size={14} />
-                          </button>
                         </div>
                       </div>
-                      <div className="mt-2 grid grid-cols-2 gap-2">
-                        <div className="rounded-xl bg-white/5 border border-white/10 p-2">
+
+                      {/* Price and Status */}
+                      <div className="grid grid-cols-2 gap-3 mb-4">
+                        <div className="rounded-xl bg-white/5 border border-white/10 p-3">
                           <p className="text-[8px] font-black uppercase tracking-[0.35em] text-white/30">Price</p>
-                          <p className="text-sm font-black italic tracking-tighter mt-1">{formatCurrency(p.price)}</p>
+                          <p className="text-sm font-black italic tracking-tighter mt-1 break-words">{formatCurrency(p.price)}</p>
                         </div>
-                        <div className="rounded-xl bg-white/5 border border-white/10 p-2">
+                        <div className="rounded-xl bg-white/5 border border-white/10 p-3">
                           <p className="text-[8px] font-black uppercase tracking-[0.35em] text-white/30">Status</p>
                           <p className="text-[9px] font-black uppercase tracking-widest text-white/60 italic mt-1">
                             {p.stock > 0 ? 'READY' : 'LOGGING'}
                           </p>
                         </div>
                       </div>
-                      <div className="rounded-xl bg-white/5 border border-white/10 p-2">
+
+                      {/* Core specs */}
+                      <div className="rounded-xl bg-white/5 border border-white/10 p-3 mb-4">
                         <p className="text-[8px] font-black uppercase tracking-[0.35em] text-white/30">Core specs</p>
-                        <div className="mt-1 space-y-1">
+                        <div className="mt-2 space-y-2">
                           {p.specs?.slice(0, 2).map((spec, i) => (
                             <div key={i} className="flex items-start gap-2">
                               <div className="w-1 h-1 rounded-full bg-white/40 mt-1.5 shrink-0" />
-                              <p className="text-[9px] font-bold text-white/60 leading-snug">{spec}</p>
+                              <p className="text-[9px] font-bold text-white/60 leading-snug break-words">{spec}</p>
                             </div>
                           ))}
                         </div>
                       </div>
-                      <div className="p-3 border-t border-white/10 bg-white/5">
+
+                      {/* Add to Cart Button */}
+                      <div className="p-3 border-t border-white/10 bg-white/5 -mx-4 -mb-4 rounded-b-2xl">
                         <button
                           onClick={() => onAddToCart(p)}
                           className="w-full py-3 bg-white text-black text-[9px] font-black uppercase tracking-[0.35em] rounded-xl active:scale-[0.98] transition-transform"
                         >
-                          <ShoppingCart size={12} className="mr-2" />
+                          <ShoppingCart size={12} className="mr-2 inline" />
                           Add to Cart
                         </button>
                       </div>

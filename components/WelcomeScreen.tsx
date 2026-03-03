@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Package, ArrowRight, Sparkles } from 'lucide-react';
+import { WelcomeLoadingAnimation } from './WelcomeLoadingAnimation';
 
 interface WelcomeScreenProps {
   onComplete: () => void;
@@ -73,7 +74,7 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onComplete }) => {
         {/* Logo animation */}
         <div className="relative inline-block">
           <div>
-            <img src="/blacklogo.png" alt="blacklogo" className="w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full"  />
+            <WelcomeLoadingAnimation size="medium" />
           </div>
 
           
@@ -110,11 +111,11 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onComplete }) => {
         </div>
 
         {/* Loading dots */}
-        <div className="flex justify-center gap-2 mt-12 opacity-0 animate-fade-in transition-all duration-2000" style={{animationDelay: '1.2s'}}>
+        {/* <div className="flex justify-center gap-2 mt-12 opacity-0 animate-fade-in transition-all duration-2000" style={{animationDelay: '1.2s'}}>
           <div className="w-2 h-2 bg-[#D4AF37] rounded-full animate-bounce"></div>
           <div className="w-2 h-2 bg-[#D4AF37] rounded-full animate-bounce delay-150"></div>
           <div className="w-2 h-2 bg-[#D4AF37] rounded-full animate-bounce delay-300"></div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
