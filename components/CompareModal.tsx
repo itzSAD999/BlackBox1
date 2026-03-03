@@ -30,8 +30,8 @@ export const CompareModal: React.FC<CompareModalProps> = ({
     <div className="fixed inset-0 z-[150] flex items-center justify-center p-4 md:p-12">
       <div className="absolute inset-0 bg-black/95 backdrop-blur-3xl" onClick={onClose} />
       
-      <div className="relative w-full max-w-[1440px] bg-black border border-white/10 rounded-[3rem] md:rounded-[4rem] shadow-2xl flex flex-col max-h-[90vh] overflow-hidden">
-        <div className="p-8 md:p-12 border-b border-white/5 flex items-center justify-between bg-black">
+      <div className="relative w-full max-w-[1440px] bg-black border border-white/10 rounded-[2rem] md:rounded-[3rem] shadow-2xl flex flex-col max-h-[95vh] overflow-hidden">
+        <div className="p-4 md:p-6 border-b border-white/5 flex items-center justify-between bg-black">
           <div className="flex items-center gap-3">
             <button
               onClick={onClose}
@@ -39,12 +39,12 @@ export const CompareModal: React.FC<CompareModalProps> = ({
             >
               <ArrowLeft size={18} />
             </button>
-            <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-black">
-              <GitCompare size={28} />
+            <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-black">
+              <GitCompare size={20} />
             </div>
             <div>
-              <h2 className="text-3xl font-serif-luxury font-black italic uppercase tracking-tighter">Compare Products</h2>
-              <p className="text-[10px] font-black uppercase tracking-[0.5em] text-white/20 italic">{products.length} products selected</p>
+              <h2 className="text-xl md:text-2xl font-serif-luxury font-black italic uppercase tracking-tighter">Compare Products</h2>
+              <p className="text-[9px] font-black uppercase tracking-[0.5em] text-white/20 italic">{products.length} products selected</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
@@ -93,7 +93,7 @@ export const CompareModal: React.FC<CompareModalProps> = ({
           </div>
         )}
 
-        <div className="flex-1 overflow-auto p-6 md:p-12 no-scrollbar">
+        <div className="flex-1 overflow-auto p-3 md:p-6 no-scrollbar">
           {products.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center opacity-10 py-40">
               <Info size={64} className="mb-8" />
@@ -103,12 +103,12 @@ export const CompareModal: React.FC<CompareModalProps> = ({
             <>
               {/* Desktop side-by-side comparison */}
               <div className="hidden lg:block">
-                <div className="flex gap-6 overflow-x-auto pb-6">
+                <div className="flex gap-3 overflow-x-auto pb-4">
                   {products.map((p) => (
-                    <div key={p.id} className="flex-1 min-w-[300px] max-w-[400px]">
-                      <div className="bg-[#0a0a0a] border border-white/10 rounded-3xl overflow-hidden">
+                    <div key={p.id} className="flex-1 min-w-[200px] max-w-[280px]">
+                      <div className="bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-hidden">
                         {/* Product Header */}
-                        <div className="relative p-6 border-b border-white/5 bg-black">
+                        <div className="relative p-4 border-b border-white/5 bg-black">
                           <button
                             onClick={() => onRemove(p.id)}
                             className="absolute top-4 right-4 p-1.5 rounded-full bg-white/10 hover:bg-red-500/20 text-white/60 hover:text-red-400 transition-colors"
@@ -117,17 +117,17 @@ export const CompareModal: React.FC<CompareModalProps> = ({
                             <X size={14} />
                           </button>
                           <div className="text-center">
-                            <div className="w-20 h-20 rounded-xl bg-black/40 border border-white/5 flex items-center justify-center overflow-hidden mx-auto mb-4">
+                            <div className="w-16 h-16 rounded-lg bg-black/40 border border-white/5 flex items-center justify-center overflow-hidden mx-auto mb-3">
                               <img src={p.image} alt={p.name} className="w-full h-full object-contain" />
                             </div>
-                            <h3 className="text-lg font-black text-white uppercase tracking-wider">{p.name}</h3>
-                            <p className="text-sm font-black uppercase tracking-widest text-white/40 italic">{p.category}</p>
-                            <p className="text-xl font-black text-white">{formatCurrency(p.price)}</p>
+                            <h3 className="text-base font-black text-white uppercase tracking-wider">{p.name}</h3>
+                            <p className="text-xs font-black uppercase tracking-widest text-white/40 italic">{p.category}</p>
+                            <p className="text-lg font-black text-white">{formatCurrency(p.price)}</p>
                           </div>
                         </div>
 
                         {/* Product Details */}
-                        <div className="p-6 space-y-4">
+                        <div className="p-4 space-y-3">
                           <div className="space-y-2">
                             <h4 className="text-sm font-black uppercase tracking-widest text-white/30">Price</h4>
                             <div className="flex gap-2 items-center">
@@ -266,11 +266,11 @@ export const CompareModal: React.FC<CompareModalProps> = ({
               </div>
 
               {/* Mobile comparison cards */}
-              <div className="lg:hidden space-y-4">
+              <div className="lg:hidden space-y-3">
                 {products.map((p) => (
-                  <div key={p.id} className="rounded-3xl border border-white/10 bg-[#050505] overflow-hidden">
-                    <div className="p-4 flex items-start gap-4">
-                      <div className="w-20 h-20 rounded-2xl bg-black/40 border border-white/5 flex items-center justify-center overflow-hidden flex-shrink-0">
+                  <div key={p.id} className="rounded-2xl border border-white/10 bg-[#050505] overflow-hidden">
+                    <div className="p-3 flex items-start gap-3">
+                      <div className="w-16 h-16 rounded-xl bg-black/40 border border-white/5 flex items-center justify-center overflow-hidden flex-shrink-0">
                         <img src={p.image} alt={p.name} className="w-full h-full object-contain" />
                       </div>
                       <div className="flex-1 min-w-0">
@@ -288,35 +288,35 @@ export const CompareModal: React.FC<CompareModalProps> = ({
                           </button>
                         </div>
                       </div>
-                      <div className="mt-3 grid grid-cols-2 gap-3">
-                        <div className="rounded-2xl bg-white/5 border border-white/10 p-3">
-                          <p className="text-[9px] font-black uppercase tracking-[0.35em] text-white/30">Price</p>
-                          <p className="text-base font-black italic tracking-tighter mt-1">{formatCurrency(p.price)}</p>
+                      <div className="mt-2 grid grid-cols-2 gap-2">
+                        <div className="rounded-xl bg-white/5 border border-white/10 p-2">
+                          <p className="text-[8px] font-black uppercase tracking-[0.35em] text-white/30">Price</p>
+                          <p className="text-sm font-black italic tracking-tighter mt-1">{formatCurrency(p.price)}</p>
                         </div>
-                        <div className="rounded-2xl bg-white/5 border border-white/10 p-3">
-                          <p className="text-[9px] font-black uppercase tracking-[0.35em] text-white/30">Status</p>
-                          <p className="text-[10px] font-black uppercase tracking-widest text-white/60 italic mt-1">
+                        <div className="rounded-xl bg-white/5 border border-white/10 p-2">
+                          <p className="text-[8px] font-black uppercase tracking-[0.35em] text-white/30">Status</p>
+                          <p className="text-[9px] font-black uppercase tracking-widest text-white/60 italic mt-1">
                             {p.stock > 0 ? 'READY' : 'LOGGING'}
                           </p>
                         </div>
                       </div>
-                      <div className="rounded-2xl bg-white/5 border border-white/10 p-3">
-                        <p className="text-[9px] font-black uppercase tracking-[0.35em] text-white/30">Core specs</p>
-                        <div className="mt-2 space-y-1">
-                          {p.specs?.slice(0, 3).map((spec, i) => (
+                      <div className="rounded-xl bg-white/5 border border-white/10 p-2">
+                        <p className="text-[8px] font-black uppercase tracking-[0.35em] text-white/30">Core specs</p>
+                        <div className="mt-1 space-y-1">
+                          {p.specs?.slice(0, 2).map((spec, i) => (
                             <div key={i} className="flex items-start gap-2">
                               <div className="w-1 h-1 rounded-full bg-white/40 mt-1.5 shrink-0" />
-                              <p className="text-[10px] font-bold text-white/60 leading-snug">{spec}</p>
+                              <p className="text-[9px] font-bold text-white/60 leading-snug">{spec}</p>
                             </div>
                           ))}
                         </div>
                       </div>
-                      <div className="p-4 border-t border-white/10 bg-white/5">
+                      <div className="p-3 border-t border-white/10 bg-white/5">
                         <button
                           onClick={() => onAddToCart(p)}
-                          className="w-full py-4 bg-white text-black text-[10px] font-black uppercase tracking-[0.35em] rounded-2xl active:scale-[0.98] transition-transform"
+                          className="w-full py-3 bg-white text-black text-[9px] font-black uppercase tracking-[0.35em] rounded-xl active:scale-[0.98] transition-transform"
                         >
-                          <ShoppingCart size={14} className="mr-2" />
+                          <ShoppingCart size={12} className="mr-2" />
                           Add to Cart
                         </button>
                       </div>
@@ -326,37 +326,37 @@ export const CompareModal: React.FC<CompareModalProps> = ({
               </div>
 
               {/* Detailed Comparison Matrix */}
-              <div className="mt-8 p-6 bg-[#0a0a0a] border border-white/10 rounded-3xl">
-                <h3 className="text-lg font-black uppercase tracking-wider text-white mb-6">Detailed Comparison Matrix</h3>
+              <div className="mt-6 p-4 bg-[#0a0a0a] border border-white/10 rounded-2xl">
+                <h3 className="text-base font-black uppercase tracking-wider text-white mb-4">Detailed Comparison Matrix</h3>
                 <div className="overflow-x-auto">
                   <table className="w-full border-collapse">
                     <thead>
                       <tr className="border-b border-white/10">
-                        <th className="text-left p-3 text-[10px] font-black uppercase tracking-widest text-white/30">Feature</th>
+                        <th className="text-left p-2 text-[9px] font-black uppercase tracking-widest text-white/30">Feature</th>
                         {products.map(p => (
-                          <th key={p.id} className="p-3 text-center min-w-[150px]">
-                            <div className="w-12 h-12 rounded-lg bg-black/40 border border-white/5 flex items-center justify-center overflow-hidden mx-auto mb-2">
+                          <th key={p.id} className="p-2 text-center min-w-[120px]">
+                            <div className="w-10 h-10 rounded-lg bg-black/40 border border-white/5 flex items-center justify-center overflow-hidden mx-auto mb-1">
                               <img src={p.image} alt={p.name} className="w-full h-full object-contain" />
                             </div>
-                            <div className="text-sm font-black text-white uppercase tracking-wider truncate">{p.name}</div>
+                            <div className="text-xs font-black text-white uppercase tracking-wider truncate">{p.name}</div>
                           </th>
                         ))}
                       </tr>
                     </thead>
                     <tbody>
                       <tr className="border-b border-white/5">
-                        <td className="p-3 text-[10px] font-black uppercase tracking-widest text-white/30">Price</td>
+                        <td className="p-2 text-[9px] font-black uppercase tracking-widest text-white/30">Price</td>
                         {products.map(p => (
-                          <td key={p.id} className="p-3 text-center">
-                            <span className="text-sm font-black text-white">{formatCurrency(p.price)}</span>
+                          <td key={p.id} className="p-2 text-center">
+                            <span className="text-xs font-black text-white">{formatCurrency(p.price)}</span>
                           </td>
                         ))}
                       </tr>
                       <tr className="border-b border-white/5">
-                        <td className="p-3 text-[10px] font-black uppercase tracking-widest text-white/30">Stock</td>
+                        <td className="p-2 text-[9px] font-black uppercase tracking-widest text-white/30">Stock</td>
                         {products.map(p => (
-                          <td key={p.id} className="p-3 text-center">
-                            <span className={`px-2 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${
+                          <td key={p.id} className="p-2 text-center">
+                            <span className={`px-1 py-0.5 rounded-full text-[8px] font-black uppercase tracking-widest ${
                               p.stock > 0 ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400'
                             }`}>
                               {p.stock > 0 ? 'Available' : 'Out of Stock'}
@@ -365,35 +365,35 @@ export const CompareModal: React.FC<CompareModalProps> = ({
                         ))}
                       </tr>
                       <tr className="border-b border-white/5">
-                        <td className="p-3 text-[10px] font-black uppercase tracking-widest text-white/30">Rating</td>
+                        <td className="p-2 text-[9px] font-black uppercase tracking-widest text-white/30">Rating</td>
                         {products.map(p => (
-                          <td key={p.id} className="p-3 text-center">
-                            <div className="flex items-center justify-center gap-1">
+                          <td key={p.id} className="p-2 text-center">
+                            <div className="flex items-center justify-center gap-0.5">
                               <div className="flex gap-0.5">
                                 {[...Array(5)].map((_, i) => (
-                                  <div key={i} className={`w-2 h-2 rounded-full ${
+                                  <div key={i} className={`w-1.5 h-1.5 rounded-full ${
                                     i < Math.floor(p.rating || 4) ? 'bg-[#B38B21]' : 'bg-white/10'
                                   }`} />
                                 ))}
                               </div>
-                              <span className="text-sm text-white/60">({p.reviewCount || 0})</span>
+                              <span className="text-xs text-white/60">({p.reviewCount || 0})</span>
                             </div>
                           </td>
                         ))}
                       </tr>
                       <tr className="border-b border-white/5">
-                        <td className="p-3 text-[10px] font-black uppercase tracking-widest text-white/30">Category</td>
+                        <td className="p-2 text-[9px] font-black uppercase tracking-widest text-white/30">Category</td>
                         {products.map(p => (
-                          <td key={p.id} className="p-3 text-center">
-                            <span className="text-sm text-white/60">{p.category}</span>
+                          <td key={p.id} className="p-2 text-center">
+                            <span className="text-xs text-white/60">{p.category}</span>
                           </td>
                         ))}
                       </tr>
                       <tr>
-                        <td className="p-3 text-[10px] font-black uppercase tracking-widest text-white/30">Best For</td>
+                        <td className="p-2 text-[9px] font-black uppercase tracking-widest text-white/30">Best For</td>
                         {products.map(p => (
-                          <td key={p.id} className="p-3 text-center">
-                            <span className="text-sm text-white/60">
+                          <td key={p.id} className="p-2 text-center">
+                            <span className="text-xs text-white/60">
                               {p.category === 'iPhone' ? 'Mobile Users' : 
                                p.category === 'Laptop' ? 'Professionals' :
                                p.category === 'Gaming' ? 'Gamers' :
